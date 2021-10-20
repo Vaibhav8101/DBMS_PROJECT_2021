@@ -1,10 +1,16 @@
 const mysql = require("mysql2");
 const express = require("express");
+const path = require("path");
 const bodyParser = require("body-parser");//for reading form data
 const encoder = bodyParser.urlencoded();
 
 const app = express();
-app.use("/styling", express.static("styling"));
+app.use(express.static("HTML"));
+// app.use("/HTML/img/", express.static("image"));
+
+app.get("/", function (req, res) {
+    res.sendFile(__dirname + "/HTML/main.html");
+})
 
 const connection = mysql.createConnection({
     host: "localhost",
@@ -63,4 +69,67 @@ connection.connect(function (err) {
             });
         }
     });
+    //inseting the data inside the form
+
 });
+
+app.post("/signup", encoder, function (req, res) {
+    var rollno = req.body.rollno;
+    var fname = req.body.fname;
+    var lname = req.body.lname;
+    var branch = req.body.branch;
+    var email = req.body.email;
+    var phoneNo = req.body.phoneNo;
+    var gender = req.body.gender;
+    var year = req.body.year;
+    var sem = req.body.sem;
+    var username = req.body.username;
+    var password = req.body.password;
+    var pcheck = req.body.psw_repeat;
+    if(pcheck===password){
+    connection.query("insert into student(roll_no,fname,lname,branch,email,phone_no,gender,year,sem,username,password) values (?,?,?,?,?,?,?,?,?,?,?)", [rollno, fname, lname, branch, email, phoneNo, gender, year, sem, username, password], function (error, results, fields) {
+        if (error) {
+            console.log("Please Enter unique id and password");
+            
+        }
+        else {
+            console.log("Signup successfull");
+        }
+        // if (results.length > 0) {
+        //     res.redirect("/insertsuccessfully");
+        // } else {
+        //     res.redirect("/insertsuccessfully");
+        // }
+        res.end();
+    })
+    }
+    else
+    {
+        console.log("please enter the password again");
+    }
+})
+
+//login code
+app.post("/login", encoder, function (req, res) {
+    var username = req.body.username;
+    var password = req.body.password;
+
+    connection.query("select * from student where username = ? and password = ?", [username, password], function (error, results, fields) {
+        if (results.length > 0) {
+            res.redirect("/welcome");
+        } else {
+            res.redirect("/loginunsuccessfull");
+        }
+        res.end();
+    })
+})
+
+app.get("/welcome", function (req, res) {
+    res.sendFile(path.join(__dirname,"/HTML/welcome.html"))
+})
+
+
+
+
+
+app.listen(4001);

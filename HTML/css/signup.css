@@ -1,7 +1,7 @@
 * {box-sizing: border-box}
 
 /* Full-width input fields */
-  input[type=text], input[type=password] {
+  input[type=text], input[type=password], input[type=number] {
   width: 100%;
   padding: 15px;
   margin: 5px 0 22px 0;
@@ -45,12 +45,14 @@ button:hover {
 /* Float cancel and signup buttons and add an equal width */
 .cancelbtn, .signupbtn {
   float: left;
-  width: 50%;
+  width: 100%;
 }
 
 /* Add padding to container elements */
 .container {
   padding: 16px;
+  position: relative;
+  z-index: 1;
 }
 
 /* Clear floats */
@@ -59,7 +61,27 @@ button:hover {
   clear: both;
   display: table;
 }
-
+body {
+  /* background-color: rgb(135, 255, 135); */
+  /* background-image: ; */
+  background: rgba(0,0,0,0.7) url('../img/r5.jpg');
+  font-family: "Roboto", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-size: cover;
+  background-blend-mode: darken;
+}
+.container h1{
+  text-align: center;
+}
+.main{
+  width: 500px;
+  box-shadow: 0 0 3px 0 rgb(0 0 0 / 70%);
+  background: #cbba6b;
+  padding: 20px;
+  margin: 8% auto;
+  border: 2px solid black;
+}
 /* Change styles for cancel button and signup button on extra small screens */
 @media screen and (max-width: 300px) {
   .cancelbtn, .signupbtn {
