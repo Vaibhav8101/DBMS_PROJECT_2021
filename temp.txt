@@ -1,0 +1,59 @@
+insert into books(title, author, category)
+value ("Zero to one", "Peter Theil", "E");
+
+create table books(
+    ISBN BIGINT primary key, 
+    Title varchar(200) not null,
+    Author varchar(200) not  null,
+    Semester int,
+    Edition int,
+    Description varchar(500),
+    category varchar(500),
+    image varchar(500)
+)
+
+insert into books(ISBN, Title, Author,image, category)
+values (9780804139298,"Zero to One", "Peter Thiel", "YES", "Self-Help"),
+
+
+create table bookss(
+    ISBN BIGINT primary key, 
+    title varchar(200) not null,
+    author varchar(200) not null, 
+    year int,
+    semester int, 
+    edition int, 
+    description  varchar(1000),
+    category char not null, 
+    image int,
+    rating decimal(4,1) not null,
+    owner int not null,
+    highlight varchar(200),
+    publisher varchar(200),
+    language char(200),
+    book_category varchar(200)
+)
+
+
+insert into bookss (ISBN, title, author, year, edition, description, category, image, rating, owner, highlight, publisher, language, book_category)
+values (9780804139298,"Zero to One", "Peter Thiel",2014, 1,"Iterating on existing products takes the world from 1 to N. Zero to One is about how to build companies that create NEW things. Peter Thiel calls on entrepreneurs to build valuable businesses around such opportunities – to build a better future for everyone. This book is for entrepreneurs, founders, or investors that want to build or invest in valuable businesses. While much of the advice is geared towards innovative startups, many of the insights also apply to small businesses that want to carve out a profitable niche. It’s an inspirational read for anyone interested in business strategy.","E","YES",4,201210051,"In this chest-thumping book, author Peter Thiel comes off as a brilliant young man with a tendency toward exaggeration.","Currency; Illustrated edition (September 16, 2014)","english","educational");
+
+insert into books (ISBN, title, author, year, edition, description, category, image, rating, owner, highlight, publisher, language, book_category)
+values (9780804139298,"Zero to One", "Peter Thiel",2014, 1,"Iterating on existing products takes the world from 1 to N. Zero to One is about how to build companies that create NEW things. This book is for entrepreneurs, founders, or investors that want to build or invest in valuable businesses. While much of the advice is geared towards innovative startups, many of the insights also apply to small businesses that want to carve out a profitable niche. It’s an inspirational read for anyone interested in business strategy.","E",1,4,201210051,"In this chest-thumping book, author Peter Thiel comes off as a brilliant young man with a tendency toward exaggeration.","Currency; Illustrated edition (September 16, 2014)","english","educational");
+
+
+ISBN
+title
+author
+year
+Semester
+Edition
+Description
+category
+image
+rating
+owner roll
+highlight
+publisher
+language
+book_category
