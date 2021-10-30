@@ -55,6 +55,14 @@ button:hover {
   z-index: 1;
 }
 
+.invalid-feedback
+{
+  background: red;
+  font-size: 30px;
+  border: 2px solid black;
+  border-radius: 6.8px;
+}
+
 /* Clear floats */
 .clearfix::after {
   content: "";

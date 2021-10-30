@@ -2,6 +2,7 @@ const connection = require("../connection");
 const express = require("express");
 const path = require("path");
 const router = require("./services");
+const dbService = require('./services_vaibhav');
 const router1 = express.Router()
 const bodyParser = require("body-parser");//for reading form data
 const encoder = bodyParser.urlencoded();
@@ -27,14 +28,9 @@ router1.post("/signup", encoder, function (req, res) {
             
         }
         else {
-            res.redirect('login.html')
+            res.redirect('/login')
             console.log("Signup successfull");
         }
-        // if (results.length > 0) {
-        //     res.redirect("/insertsuccessfully");
-        // } else {
-        //     res.redirect("/insertsuccessfully");
-        // }
         res.end();
     })
     }
@@ -59,7 +55,20 @@ router1.post("/login", encoder, function (req, res) {
         res.end();
     })
 })
+router1.get("/getAll", function (req, res) {
+    const db = dbService.getDbServiceInstance();
 
+    const result = db.getAllData();
+
+    result
+        .then(data => res.json({ data: data }))
+        .catch(err => console.log(err));
+
+})
+
+router1.get("/login", function (req, res) {
+    res.sendFile(path.join(__dirname, "../public/html/login.html"))
+})
 router1.get("/",  (req, res) => {
     res.sendFile(path.join(__dirname ,"../public/html/main.html"));
   })
