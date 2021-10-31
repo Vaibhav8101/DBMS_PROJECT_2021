@@ -1,8 +1,7 @@
 const connection = require("../connection");
 const express = require("express");
 const path = require("path");
-const router = require("./services");
-const dbService = require('./services_vaibhav');
+const dbService = require('./dbservices');
 const router1 = express.Router()
 const bodyParser = require("body-parser");//for reading form data
 const encoder = bodyParser.urlencoded();
@@ -50,6 +49,7 @@ router1.post("/login", encoder, function (req, res) {
             console.log("Login successful");
             res.redirect("service.html");
         } else {
+            // console.log(username, password)
             res.redirect("/loginunsuccessfull");
         }
         res.end();
