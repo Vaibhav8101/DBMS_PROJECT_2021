@@ -12,8 +12,7 @@ html{
     position: sticky;
     top: 0;
     cursor: pointer;
-    background: slateblue;
-
+    background: darkslategrey;
 }
 .logo{
     width:20%;
@@ -30,7 +29,7 @@ html{
 
 .nav-list{
     width: 50%;
-    background: slateblue;
+    background: darkslategrey;
     width: 50%;
     display: flex;
     align-items: center
@@ -59,7 +58,7 @@ a{
 }
 .right-nav{
     display: flex;
-    background: slateblue;
+    background: darkslategrey;
     width: 50%;
     text-align: right;
     flex-direction: row-reverse;
@@ -322,7 +321,7 @@ a{
 {
     .nav-list{
         width: 50%;
-        background: slateblue;
+        background: darkslategrey;
         width: 50%;
         display: flex;
         flex-direction: column;
@@ -343,7 +342,7 @@ a{
         position: sticky;
         top: 0;
         cursor: pointer;
-        background: slateblue;
+        background:darkslategrey;
         flex-direction: column;
         height: 500px;
         transition: all 0.7s ease-out;

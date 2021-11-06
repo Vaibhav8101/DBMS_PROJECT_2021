@@ -1,14 +1,20 @@
-const connection = require("../connection");
+var connection = require("../connection");
 const express = require("express");
 const path = require("path");
+const bcrypt=require('bcrypt');
 const router = require("./services");
 const dbService = require('./services_vaibhav');
 const router1 = express.Router()
+const Handlebars = require("express-handlebars");
 const bodyParser = require("body-parser");//for reading form data
+const mysqlConnection = require("../connection");
 const encoder = bodyParser.urlencoded();
+express().use(express.static(path.join(__dirname, "../public")));
+var sessionUsername;
 
 
-router1.post("/signup", encoder, function (req, res) {
+//signup request
+router1.post("/signup", encoder, async function (req, res) {
     var rollno = req.body.rollno;
     var fname = req.body.fname;
     var lname = req.body.lname;
@@ -21,40 +27,49 @@ router1.post("/signup", encoder, function (req, res) {
     var username = req.body.username;
     var password = req.body.password;
     var pcheck = req.body.psw_repeat;
-    if(pcheck===password){
-    connection.query("insert into student(roll_no,fname,lname,branch,email,phone_no,gender,year,sem,username,password) values (?,?,?,?,?,?,?,?,?,?,?)", [rollno, fname, lname, branch, email, phoneNo, gender, year, sem, username, password], function (error, results, fields) {
-        if (error) {
-            console.log("Please Enter unique id and password");
-            
-        }
-        else {
-            res.redirect('/login')
-            console.log("Signup successfull");
-        }
-        res.end();
-    })
+    if (pcheck === password) {
+        const hashpsw=await bcrypt.hash(password,6);
+        connection.query("insert into student(roll_no,fname,lname,branch,email,phone_no,gender,year,sem,username,password) values (?,?,?,?,?,?,?,?,?,?,?)", [rollno, fname, lname, branch, email, phoneNo, gender, year, sem, username, hashpsw], function (error, results, fields) {
+            if (error) {
+                throw error;
+            }
+            else {
+                res.redirect("/login")
+            }
+            res.end();
+        })
     }
-    else
-    {
+    else {
         console.log("please enter the password again");
     }
 })
 
-//login code
-router1.post("/login", encoder, function (req, res) {
-    var username = req.body.username;
-    var password = req.body.password;
+//home page
+router1.get("/", function (req, res) {
+    res.sendFile(path.join(__dirname, "../public/html/main.html"))
+})
 
-    connection.query("select * from student where username = ? and password = ?", [username, password], function (error, results, fields) {
-        if (results.length > 0) {
+//login code
+router1.post("/login", encoder, async function (req, res) {
+    username = req.body.username;
+    var password = req.body.password;
+    connection.query("select password from student where username = ? ", [username],async function (error, results, fields) {
+        results = JSON.parse(JSON.stringify(results))
+        // console.log(results[0].password);
+        if (await bcrypt.compare(password,results[0].password)) {
             console.log("Login successful");
-            res.redirect("service.html");
+            req.session.Username=username;
+            sessionUsername=req.session.Username;
+            // console.log(req.session.Username);
+            res.redirect("/service");
         } else {
-            res.redirect("/loginunsuccessfull");
+            res.redirect("/login");
         }
         res.end();
     })
 })
+
+//giving data to the signup form js so we analyse this username exist or not
 router1.get("/getAll", function (req, res) {
     const db = dbService.getDbServiceInstance();
 
@@ -66,12 +81,45 @@ router1.get("/getAll", function (req, res) {
 
 })
 
+//services page
+router1.get("/service", function (req, res) {
+    // console.log(req.session.Username);
+    if (req.session.Username) {
+        res.render("service", { name:req.session.Username});
+    }
+    else {
+        res.redirect("/login");
+    }
+})
+
+//logout request
+router1.get("/logout", function (req, res) {
+    req.session.destroy(function (err) {
+        if (err) {
+            res.redirect("/login");
+        }
+    })
+    res.redirect("/login");
+})
+
+
+//user profile
+router1.get("/profile", (req, res) => {
+    connection.query("select roll_no,username,fname,lname,branch,email,phone_no,gender,year,sem,rating  from student where username = ?", [sessionUsername], (error, results, fields) => {
+        if (!error) {
+            results = JSON.parse(JSON.stringify(results))
+            res.render("userDash", { results: results, layout: "mainUserDash.handlebars" });
+
+        } else {
+            res.redirect("/login");
+        }
+
+    })
+})
+
+//logint page redirection
 router1.get("/login", function (req, res) {
     res.sendFile(path.join(__dirname, "../public/html/login.html"))
 })
-router1.get("/",  (req, res) => {
-    res.sendFile(path.join(__dirname ,"../public/html/main.html"));
-  })
-
 module.exports = router1;
 

@@ -5,21 +5,10 @@ const bodyParser = require("body-parser");//for reading form data
 const encoder = bodyParser.urlencoded();
 let instance = null;
 
+var connection = require("../connection");
 const app = express();
-const connection = mysql.createConnection({
-    host: "sql6.freesqldatabase.com",
-    user: "sql6447609",
-    password: "GDlm6fL6Uc",
-    port: 3306,
-    database: "sql6447609"
-
-});
-
-connection.connect(function (error) {
-    if (error) throw error
-    else console.log("connected to the database successfully!")
-});
-
+/*this file we are creating so that we pass all data to javascript file 
+index.js in js folder */
 
 class DbService {
     static getDbServiceInstance() {
