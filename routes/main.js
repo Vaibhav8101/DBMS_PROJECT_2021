@@ -1,9 +1,13 @@
 var connection = require("../connection");
 const express = require("express");
 const path = require("path");
+<<<<<<< HEAD
 const bcrypt=require('bcrypt');
 const router = require("./services");
 const dbService = require('./services_vaibhav');
+=======
+const dbService = require('./dbservices');
+>>>>>>> 6ed4e32c5aac2832e750952125912502d38ec0df
 const router1 = express.Router()
 const Handlebars = require("express-handlebars");
 const bodyParser = require("body-parser");//for reading form data
@@ -63,7 +67,12 @@ router1.post("/login", encoder, async function (req, res) {
             // console.log(req.session.Username);
             res.redirect("/service");
         } else {
+<<<<<<< HEAD
             res.redirect("/login");
+=======
+            // console.log(username, password)
+            res.redirect("/loginunsuccessfull");
+>>>>>>> 6ed4e32c5aac2832e750952125912502d38ec0df
         }
         res.end();
     })
