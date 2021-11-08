@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', function () {
         .then(response => response.json())
         .then(data => loadHTMLTable(data['data']));
 });
+
 var data1;
 var validUser = false;
 var validRoll = false;
@@ -17,9 +18,8 @@ function loadHTMLTable(data) {
         data1 = data;
 
     }
-
-
 }
+
 const rn = document.getElementById("rn");
 const fn = document.getElementById("fn");
 const pn = document.getElementById("pn");
@@ -40,9 +40,6 @@ ps2.addEventListener('blur', () => {
 
 })
 
-
-
-
 const searchUser = async searchText => {
     let flag = 0;
     data1.forEach(obj => {
@@ -59,9 +56,7 @@ const searchUser = async searchText => {
             un.classList.remove('is-invalid');
             submit.classList.remove('disabled');
             console.log("it not matched");
-
         }
-
     });
     console.log('-------------------');
 };
@@ -76,19 +71,17 @@ const searchRollNo = async searchText => {
             submit.classList.add('disabled');
             console.log("it matched");
             flag = 1;
-
         }
         else if (check != searchText && flag != 1) {
             rn.classList.remove('is-invalid');
             submit.classList.remove('disabled');
             console.log("it not matched");
-
-
         }
 
     });
     console.log('-------------------');
 };
+
 pn.addEventListener('blur', () => {
     console.log("phone is blurred");
     // Validate phone here
@@ -104,10 +97,9 @@ pn.addEventListener('blur', () => {
         console.log('Your phone is not valid');
         pn.classList.add('is-invalid');
         submit.classList.add('disabled');
-
     }
 })
 
 
 un.addEventListener('input', () => searchUser(un.value));//putting arrow function here
-rn.addEventListener('input', () => searchRollNo(rn.value));//putting arrow 
+rn.addEventListener('input', () => searchRollNo(rn.value)); //putting arrow 

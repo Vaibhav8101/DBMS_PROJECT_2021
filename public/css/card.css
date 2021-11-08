@@ -374,5 +374,12 @@ a{
   }
   .card-container
   {
+      /* min-width: 100vw; */
+      /* max-width: 200vw; */
+      /* width: vh; */
+      /* height: 100vh; */
       display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
   }

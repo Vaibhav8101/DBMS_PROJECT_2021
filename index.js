@@ -17,6 +17,7 @@ const mysqlConnection = require("./connection");
 
 const Route = require("./routes/services");
 const route1 = require("./routes/main");
+const route2 = require("./routes/bookupload");
 
 app.use(express.static("public"))
 app.use(express.static("Service"));
@@ -26,6 +27,8 @@ app.get('service.html')
 app.use("/", route1);
 
 app.use("/", Route);
+app.use("/",route2);
+
 
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`)
