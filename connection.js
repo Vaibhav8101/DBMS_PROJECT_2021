@@ -1,23 +1,16 @@
 const mysql = require("mysql");
 
-var host = "sql6.freesqldatabase.com";
-var user = "sql6447609";
-var pass = "GDlm6fL6Uc";
-var database = "sql6447609";
-
-var mysqlConnection = mysql.createConnection( {
+var host = "remotemysql.com";
+var user = "nsYyfn2jmb";
+var pass = "erarzfZVZG";
+var database = "nsYyfn2jmb";
+//creating a pool because err come with mysqlConnection
+var mysqlConnection = mysql.createPool({
     host: host,
     user: user,
     password: pass,
     database: database,
     multipleStatements: true
-})
-mysqlConnection.connect((err) => {
-    if(!err){ 
-        console.log("Connected")
-    }else{
-        console.log("Connection Failed");
-    }
 })
 
 module.exports = mysqlConnection
