@@ -1,7 +1,7 @@
 var connection = require("../connection");
 const express = require("express");
 const path = require("path");
-const bcrypt=require('bcrypt');
+const bcrypt = require('bcryptjs');
 const router = require("./services");
 const dbService = require('./dbservices');
 const router1 = express.Router()
@@ -28,19 +28,22 @@ router1.post("/signup", encoder, async function (req, res) {
     var password = req.body.password;
     var pcheck = req.body.psw_repeat;
     if (pcheck === password) {
-        const hashpsw=await bcrypt.hash(password,6);
+        const hashpsw = await bcrypt.hash(password, 6);
         connection.query("insert into student(roll_no,fname,lname,branch,email,phone_no,gender,year,sem,username,password) values (?,?,?,?,?,?,?,?,?,?,?)", [rollno, fname, lname, branch, email, phoneNo, gender, year, sem, username, hashpsw], function (error, results, fields) {
             if (error) {
                 throw error;
             }
             else {
+                console.log("Signup successfull");
                 res.redirect("/login")
             }
             res.end();
         })
     }
     else {
-        console.log("please enter the password again");
+        console.log("Please enter the password again");
+        res.redirect("/login");
+
     }
 })
 
@@ -53,13 +56,13 @@ router1.get("/", function (req, res) {
 router1.post("/login", encoder, async function (req, res) {
     username = req.body.username;
     var password = req.body.password;
-    connection.query("select password from student where username = ? ", [username],async function (error, results, fields) {
+    connection.query("select password from student where username = ? ", [username], async function (error, results, fields) {
         results = JSON.parse(JSON.stringify(results))
         // console.log(results[0].password);
-        if (await bcrypt.compare(password,results[0].password)) {
+        if (await bcrypt.compare(password, results[0].password)) {
             console.log("Login successful");
-            req.session.Username=username;
-            sessionUsername=req.session.Username;
+            req.session.Username = username;
+            sessionUsername = req.session.Username;
             // console.log(req.session.Username);
             res.redirect("/service");
         } else {
@@ -84,7 +87,7 @@ router1.get("/getAll", function (req, res) {
 router1.get("/service", function (req, res) {
     // console.log(req.session.Username);
     if (req.session.Username) {
-        res.render("service", { name:req.session.Username});
+        res.render("service", { name: req.session.Username, layout: "services" });
     }
     else {
         res.redirect("/login");
