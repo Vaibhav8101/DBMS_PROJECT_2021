@@ -99,6 +99,36 @@
                                                 <div class="property_value ">{{this.edition}}</div>
                                             </div>
                                             {{/if}}
+                                            {{#if this.cat.E}}
+                                        </div>
+                                            <div>
+                                                <br>
+                                                <div style="color: black; font-size: 11pt; display: block; property_label">Demanded Book:</div>
+                                            </div>
+                                        <div class="bookDetailsBox">
+                                            <div class="bookProperty property_isbn 13">
+                                                <div class="property_label">Book:</div>
+                                                <div class="property_value ">{{this.D_Book}}</div>
+                                            </div>
+                                            <div class="bookProperty property_isbn 13">
+                                                <div class="property_label">Author:</div>
+                                                <div class="property_value ">{{this.D_Author}}</div>
+                                            </div>
+                                        </div>
+                                            {{/if}}
+                                            {{#if this.cat.S}}
+                                            <div class="bookProperty property_isbn 13">
+                                                <div class="property_label">Price:</div>
+                                                <div class="property_value ">{{this.price}}</div>
+                                            </div>
+                                            {{/if}}
+                                            {{#if this.cat.S}}
+                                            <div class="bookProperty property_isbn 13">
+                                                <div class="property_label">Charge:</div>
+                                                <div class="property_value ">{{this.cost}} rs/Mo</div>
+                                            </div>
+                                            {{/if}}
+
                                             <div style="display: none;" class="bookProperty property_user_tags">
                                                 <div class="property_label">Your tags:</div>
                                                 <div class="property_value "></div>
