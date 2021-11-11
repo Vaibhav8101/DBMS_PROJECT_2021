@@ -1,25 +1,27 @@
+
 {{#if rows}}
-    {{#each rows}}
-    <div class="book read">
-        <div class="cover">
-            {{#if this.image}}
-            <img src="img/{{this.ISBN}}.jpg" alt="">
-            {{else}}
-            <img src="img/temp.png" alt="">
-            {{/if}}
-        </div>
-        <div class="description">
-            <p class="title">
-                <a href="/bookdetails/{{this.ISBN}}" style="color:black; text-decoration: none;">{{this.title}}</a>
-                <br>
-                <span class="author">{{this.author}}</span>
-            </p>
-        </div>
+{{#each rows}}
+<div class="book read">
+    <div class="cover">
+        {{#if this.image}}
+        <img src="img/{{this.ISBN}}.jpg" alt="">
+        {{else}}
+        <img src="img/temp.png" alt="">
+        {{/if}}
     </div>
-    {{/each}}
+    <div class="description">
+        <p class="title">
+            <a href="/bookdetails/{{this.ISBN}}" style="color:black; text-decoration: none;">{{this.title}}</a>
+            <br>
+            <span class="author">{{this.author}}</span>
+        </p>
+    </div>
+</div>
+{{/each}}
 {{else}}
-    <p>No books available.</p>
+<p>No books available.</p>
 {{/if}}
 
 </div>
-<a style="padding-left: 30px; padding-top: 20px;" href = "bookupload/{{rows.category}}">Open your book for {{rows.Name}}.</a>
+<a style="padding-left: 30px; padding-top: 20px;" href="bookupload/{{rows.category}}">Open your book for
+    {{rows.Name}}.</a>

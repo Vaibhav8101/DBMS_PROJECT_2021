@@ -54,10 +54,14 @@ router.get("/bookdetails/:bookISBN", (req, res) => {
 router.get("/exchange", (req, res) => {
     mysqlConnection.query("Select * from books where category = 'E'", (err, rows, fields) => {
         if (!err) {
-            console.log(rows);
+            // console.log(rows);
             rows['category'] = 'E';
             rows['Name'] = "Exchange"
-            res.render("books", { rows: rows, layout: 'ListBook.handlebars' })
+            // res.render("books", { rows: rows, layout: 'ListBook.handlebars' })
+            var cG=rows['category'];
+            // res.render("books", { rows: rows,category:cG, layout: 'ListBook.handlebars' })
+            var cG=rows['category'];
+            res.render("books", { rows: rows,category:cG, layout: 'ListBook.handlebars' })
             // console
         } else {
             // res.send(err);
@@ -73,8 +77,10 @@ router.get("/rent", (req, res) => {
         if (!err) {
             rows['category'] = 'R';
             rows['Name'] = "Rent"
-            // console.log(rows);
-            res.render("books", { rows: rows, layout: 'ListBook.handlebars' })
+            var cG=rows['category'];
+            // res.render("books", { rows: rows,category:cG, layout: 'ListBook.handlebars' })
+            var cG=rows['category'];
+            res.render("books", { rows: rows,category:cG, layout: 'ListBook.handlebars' })
         } else {
             // res.send(err);
             console.log(err);
@@ -91,7 +97,9 @@ router.get("/buy", (req, res) => {
             // console.log(rows);
             rows['category'] = 'S';
             rows['Name'] = "Sell"
-            res.render("books", { rows: rows, layout: 'ListBook.handlebars' })
+            // res.render("books", { rows: rows, layout: 'ListBook.handlebars' })
+            var cG=rows['category'];
+            res.render("books", { rows: rows,category:cG, layout: 'ListBook.handlebars' })
         } else {
             // res.send(err);
             console.log(err);

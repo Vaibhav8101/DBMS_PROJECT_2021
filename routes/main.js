@@ -10,7 +10,7 @@ const bodyParser = require("body-parser");//for reading form data
 const mysqlConnection = require("../connection");
 const encoder = bodyParser.urlencoded();
 express().use(express.static(path.join(__dirname, "../public")));
-var sessionUsername;
+var sessionUsername,category,searchValue;
 
 
 //signup request
@@ -123,5 +123,31 @@ router1.get("/profile", (req, res) => {
 router1.get("/login", function (req, res) {
     res.sendFile(path.join(__dirname, "../public/html/login.html"))
 })
+
+
+//search bar
+router1.post("/search/:category", encoder, async function (req, res){
+    searchValue=req.body.search;
+    category = req.params.category;
+    console.log(category);
+    console.log(searchValue);
+    res.redirect("/search");
+})
+router1.get("/search", function (req, res) {
+    // res.sendFile(path.join(__dirname, "../public/html/login.html"))
+    mysqlConnection.query("Select * from books where category = ? and title like ?",[category,'%'+searchValue+'%'], (err, rows, fields) => {
+        if (!err) {
+            rows['category'] = 'R';
+            rows['Name'] = "Rent"
+            var cG=rows['category'];
+            res.render("books", { rows: rows,category:cG, layout: 'ListBook.handlebars' })
+        } else {
+            // res.send(err);
+            console.log(err);
+            return;
+        }
+    })
+})
+
 module.exports = router1;
 
