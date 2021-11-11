@@ -11,28 +11,38 @@ express().use(express.static(path.join(__dirname, "../public")))
 router.get("/bookdetails/:bookISBN", (req, res) => {
     isbn = req.params.bookISBN;
     mysqlConnection.query("Select * from books where isbn = " + String(isbn), (err, rows, fields) => {
+        let char = rows[0]['category'];
+        rows[0]['cat'] = {E: char == 'E',
+                         R: char == 'R',
+                         S: char == 'S'                    
+                        }
         if (!err) {
-            if (rows[0]['category'] == 'E') {
+            if (char == 'E') {
                 rows[0]['category'] = "Exchange Book"
                 mysqlConnection.query("select * from demand where isbn = ?", [isbn], (error, result, field) => {
                     if (!error) {
                         rows[0]['D_Book'] = result[0]['btitle'];
                         rows[0]['D_Author'] = result[0]['bauthor'];
+                        res.render("book_details", { rows: rows, layout: 'main.handlebars' })
                     }
                 })
-            } else if (rows[0]['category'] == 'S') {
+            } else if (char == 'S') {
                 rows[0]['category'] = "Buy Book"
                 mysqlConnection.query("select * from sell where isbn = ?", [isbn], (error, result, fld) => {
-                    if (!error) rows[0]['price'] = result[0]['price'];
+                    if (!error){
+                        rows[0]['price'] = result[0]['price'];
+                        res.render("book_details", { rows: rows, layout: 'main.handlebars' })
+                    }
                 })
-            } else if (rows[0]['category'] == 'R') {
+            } else if (char == 'R') {
                 rows[0]['category'] = "Rent Book"
                 mysqlConnection.query("select * from rent where isbn = ?", [isbn], (error, result, fld) => {
-                    if (!error) rows[0]['cost'] = result[0]['cost'];
+                    if (!error){
+                        rows[0]['cost'] = result[0]['cost'];
+                        res.render("book_details", { rows: rows, layout: 'main.handlebars' })
+                    }
                 })
             }
-            // console.log(rows);
-            res.render("book_details", { rows: rows, layout: 'main.handlebars' })
         } else {
             // res.send(err);
             console.log(err);
