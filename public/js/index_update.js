@@ -21,7 +21,7 @@ function loadHTMLTable(data) {
 }
 
 const rn = document.getElementById("rn");
-const un = document.getElementById("un");
+// const un = document.getElementById("un");
 const fn = document.getElementById("fn");
 const pn = document.getElementById("pn");
 const ps1 = document.getElementById("ps1");
@@ -102,5 +102,4 @@ pn.addEventListener('blur', () => {
 })
 
 
-un.addEventListener('input', () => searchUser(un.value));//putting arrow function here
 rn.addEventListener('input', () => searchRollNo(rn.value)); //putting arrow 
