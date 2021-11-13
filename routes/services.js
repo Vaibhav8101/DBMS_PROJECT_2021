@@ -79,7 +79,7 @@ router.get("/rent", (req, res) => {
             rows['Name'] = "Rent"
             var cG=rows['category'];
             // res.render("books", { rows: rows,category:cG, layout: 'ListBook.handlebars' })
-            var cG=rows['category'];
+            // var cG=rows['category'];
             res.render("books", { rows: rows,category:cG, layout: 'ListBook.handlebars' })
         } else {
             // res.send(err);

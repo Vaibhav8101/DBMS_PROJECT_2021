@@ -34,7 +34,7 @@
             <label for="fname"><b>First Name</b></label>
             <input type="text" placeholder="Enter First name" name="fname" id="fn" required>
             <div class="clearfix">
-                <button type="submit" id="submit" class="btn btn-primary">Update full name</button>
+                <button type="submit" id="submit" class="btn btn-primary">Update first name</button>
             </div>
         </form>
         <form action="/uplname" style="border:1px solid #ccc" method="post">
@@ -96,11 +96,11 @@
         </form>
 
         <form action="/upPass" style="border:1px solid #ccc" method="post">
-            <label for="psw"><b>Password</b></label>
-            <input type="password" id="ps1" placeholder="Enter Password" name="prev_password" required>
+            <label for="psw"><b>Old Password</b></label>
+            <input type="password" id="ps1" placeholder="Enter old Password" name="prev_password" required>
             <div class="form-group">
-                <label for="psw-repeat"><b>Repeat Password</b></label>
-                <input type="password"  placeholder="Repeat Password" name="new_password" class="form-control"
+                <label for="psw-repeat"><b>New password</b></label>
+                <input type="password"  placeholder="Enter new password" name="new_password" class="form-control"
                     required>
 
             </div>

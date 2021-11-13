@@ -130,18 +130,33 @@ router1.get("/login", function (req, res) {
 router1.post("/search/:category", encoder, async function (req, res) {
     searchValue = req.body.search;
     category = req.params.category;
-    console.log(category);
-    console.log(searchValue);
+    // console.log(category);
+    // console.log(searchValue);
     res.redirect("/search");
 })
 router1.get("/search", function (req, res) {
     // res.sendFile(path.join(__dirname, "../public/html/login.html"))
     mysqlConnection.query("Select * from books where category = ? and title like ?", [category, '%' + searchValue + '%'], (err, rows, fields) => {
         if (!err) {
-            rows['category'] = 'R';
-            rows['Name'] = "Rent"
-            var cG = rows['category'];
-            res.render("books", { rows: rows, category: cG, layout: 'ListBook.handlebars' })
+            console.log(category);
+            
+            if(category=='E')
+            {
+                rows['category'] = category;
+                rows['Name'] = "Exchange"
+            }
+            else if(category=='S')
+            {
+                rows['category'] = category;
+                 rows['Name'] = "Sell"
+            }
+            else if(category=='R')
+            {
+                rows['category'] = category;
+                rows['Name'] = "Rent"
+            }
+            // var cG = rows['category'];
+            res.render("books", { rows: rows, category: category, layout: 'ListBook.handlebars' })
         } else {
             // res.send(err);
             console.log(err);
