@@ -10,6 +10,7 @@ const bodyParser = require("body-parser");//for reading form data
 const mysqlConnection = require("../connection");
 const encoder = bodyParser.urlencoded();
 express().use(express.static(path.join(__dirname, "../public")));
+
 var sessionUsername, category, searchValue;
 
 
@@ -149,6 +150,7 @@ router1.get("/search", function (req, res) {
         }
     })
 })
+
 router1.get("/updateRecord", function (req, res) {
     res.sendFile(path.join(__dirname, "../public/html/updateRecord.html"))
 })
@@ -320,5 +322,6 @@ router1.get("/uSuccess", function (req, res) {
 router1.get("/unSuccess", function (req, res) {
     res.render("updateunsuccess");
 })
+
 module.exports = router1;
 
