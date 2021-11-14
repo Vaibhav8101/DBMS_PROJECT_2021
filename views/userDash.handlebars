@@ -6,10 +6,19 @@
 			<div class="row z-depth-3">
 				<div class="col-sm-4 bg-info rounded-left">
 					<div class="card-block text-center text-white">
+						{{#if this.img}}
+						<img class="fas fa-7x mt-5" src="upload/{{this.img}}" style="max-width: 223px; border-radius:31px;">
+						{{else}}
 						<i class="fas fa-user-tie fa-7x mt-5"></i>
+						{{/if}}
 						<h2 class="font-weight-bold mt-4">{{this.username}}</h2>
 						<p>Student</p><i class="far fa-edit fa-2x mb-4"></i>
 					</div>
+					<form action="/image" method="POST" encType="multipart/form-data">
+						<h3>Upload Profile Photo</h3>
+						<input type="file" name="sampleFile" accept="image/*" />
+						<input type="submit" class="btn btn-primary">
+					</form>
 				</div>
 				<div class="col-sm-8 bg-white rounded-right">
 					<h3 class="mt-3 text-center">Account details</h3>
@@ -61,7 +70,8 @@
 					<hr class="bg-primary">
 					<div class="row">
 						<div class="col-sm-6">
-							<button type="button" class="btn btn-primary"><a href="/updateRecord" style="color:black;">Update Your Records</a></button>
+							<button type="button" class="btn btn-primary"><a href="/updateRecord"
+									style="color:black;">Update Your Records</a></button>
 						</div>
 
 					</div>

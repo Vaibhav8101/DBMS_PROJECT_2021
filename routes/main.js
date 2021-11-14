@@ -68,6 +68,7 @@ router1.post("/login", encoder, async function (req, res) {
             // console.log(req.session.Username);
             res.redirect("/service");
         } else {
+            res.redirect("/login")
         }
         res.end();
     })
@@ -109,7 +110,7 @@ router1.get("/logout", function (req, res) {
 
 //user profile
 router1.get("/profile", (req, res) => {
-    connection.query("select roll_no,username,fname,lname,branch,email,phone_no,gender,year,sem,rating  from student where username = ?", [sessionUsername], (error, results, fields) => {
+    connection.query("select roll_no,img,username,fname,lname,branch,email,phone_no,gender,year,sem,rating  from student where username = ?", [sessionUsername], (error, results, fields) => {
         if (!error) {
             results = JSON.parse(JSON.stringify(results))
             res.render("userDash", { results: results, layout: "mainUserDash.handlebars" });
@@ -135,6 +136,7 @@ router1.post("/search/:category", encoder, async function (req, res) {
     // console.log(searchValue);
     res.redirect("/search");
 })
+//search bar implementation
 router1.get("/search", function (req, res) {
     // res.sendFile(path.join(__dirname, "../public/html/login.html"))
     mysqlConnection.query("Select * from books where category = ? and title like ?", [category, '%' + searchValue + '%'], (err, rows, fields) => {
@@ -336,6 +338,45 @@ router1.get("/uSuccess", function (req, res) {
 })
 router1.get("/unSuccess", function (req, res) {
     res.render("updateunsuccess");
+})
+
+//creating a route for directing to the activities page
+router1.get("/activities", function (req, res) {
+    res.render("activities",{layout:"listBook.handlebars"});
+})
+
+//uploading image
+router1.post("/image", encoder, async function (req, res) {
+  let sampleFile;
+  let uploadPath;
+
+  if (!req.files || Object.keys(req.files).length === 0) {
+    return res.status(400).send('No files were uploaded.');
+  }
+
+  // name of the input is sampleFile
+  sampleFile = req.files.sampleFile;
+  uploadPath =  __dirname+'/upload/' + sampleFile.name;
+
+  console.log(sampleFile);
+
+  // Use mv() to place file on the server
+  console.log(req.session.Username);
+  sampleFile.mv(uploadPath, function (err) {
+      
+      if (err) return res.status(500).send(err);
+      console.log(req.session.Username);
+    //   res.send('File Uploaded');
+      connection.query('UPDATE student SET img = ? WHERE username =?', [sampleFile.name,req.session.Username], (err, rows) => {
+        if (!err) {
+          console.log("Image uploaded successfully");
+          res.redirect('/profile');
+        } else {
+          console.log(err);
+        }
+      });
+    });
+   
 })
 
 module.exports = router1;
