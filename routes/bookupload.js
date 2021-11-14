@@ -2,7 +2,6 @@ const connection = require("../connection");
 const express = require("express");
 const router2 = express.Router();
 const path = require("path");
-
 const bodyParser = require("body-parser");
 const encoder = bodyParser.urlencoded();
 

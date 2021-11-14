@@ -342,7 +342,7 @@ router1.get("/unSuccess", function (req, res) {
 
 //creating a route for directing to the activities page
 router1.get("/activities", function (req, res) {
-    res.render("activities",{layout:"listBook.handlebars"});
+    res.render("activities",{layout:"Listbook_second.handlebars"});
 })
 
 //uploading image
