@@ -35,6 +35,7 @@ router.get("/bookdetails/:bookISBN", (req, res) => {
                     }
                 })
             } else if (char == 'R') {
+                console.log("Hello")
                 rows[0]['category'] = "Rent Book"
                 mysqlConnection.query("select * from rent where isbn = ?", [isbn], (error, result, fld) => {
                     if (!error){

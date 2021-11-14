@@ -2,12 +2,12 @@ const connection = require("../connection");
 const express = require("express");
 const router2 = express.Router();
 const path = require("path");
-
+const fileupload = require('express-fileupload');
 const bodyParser = require("body-parser");
 const encoder = bodyParser.urlencoded();
 
 express().use(express.static(path.join(__dirname, "../public")))
-
+express().use(fileupload());
 
 router2.get("/bookupload/:C", (req, res) => {
     char = req.params.C
@@ -22,6 +22,7 @@ router2.get("/bookupload/:C", (req, res) => {
 })
 
 router2.post("/uploadbook/:C", encoder, (req, res) => {
+    // console.log(req.files.samplefile)
     request = req.params.C;
     console.log(request);
     title = req.body.title;
@@ -36,8 +37,8 @@ router2.post("/uploadbook/:C", encoder, (req, res) => {
     publisher = req.body.publisher;
     highlight = req.body.highlight;
     description = req.body.description;
-    console.log(req.url);
-    res.get(req.url);
+    console.log(req.body);
+    // res.get(req.url);
     if (request == 'R') {
         connection.query("insert into books (ISBN, title, author, year, edition, description, rating, category, owner, highlight, publisher, language, book_category) values (?,?,?,?,?,?,?,?,?,?,?,?,?)", [isbn, title, author, year, edition, description, 1, request, owner, highlight, publisher, language, book_category], (error, rows, fields) => {
             if (error) {
@@ -91,7 +92,6 @@ router2.post("/uploadbook/:C", encoder, (req, res) => {
                     }
                 })
             }
-
         });
 
     }
