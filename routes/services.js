@@ -16,6 +16,7 @@ router.get("/bookdetails/:bookISBN", (req, res) => {
                          R: char == 'R',
                          S: char == 'S'                    
                         }
+        rows[0]['char'] = char;
         if (!err) {
             if (char == 'E') {
                 rows[0]['category'] = "Exchange Book"
