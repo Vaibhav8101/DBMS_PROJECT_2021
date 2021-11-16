@@ -6,6 +6,7 @@ const app = express()
 const port = 3030
 var session = require('express-session')
 app.engine('handlebars', exphbs());
+
 app.set('view engine', 'handlebars');// trust first proxy
 // app.set('trust proxy', 1)
 app.use(session({
