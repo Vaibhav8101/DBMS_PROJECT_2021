@@ -6,3 +6,4 @@
   5. express-session
   6. mysql
   7. nodemon
+  8. express-fileupload
