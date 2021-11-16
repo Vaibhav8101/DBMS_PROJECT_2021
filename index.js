@@ -1,6 +1,7 @@
 const express = require('express')
 const exphbs = require("express-handlebars")
 const path  = require("path")
+const fileUpload = require('express-fileupload');
 const app = express()
 const port = 3030
 var session = require('express-session')
@@ -13,6 +14,8 @@ app.use(session({
   resave: false,
   saveUninitialized: true,
 }))
+app.use(fileUpload());
+
 
 const mysqlConnection = require("./connection");
 
@@ -22,6 +25,7 @@ const route2 = require("./routes/bookupload");
 
 app.use(express.static("public"))
 app.use(express.static("Service"));
+app.use(express.static("routes"));
 
 app.get('service.html')
 

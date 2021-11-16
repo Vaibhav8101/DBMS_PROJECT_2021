@@ -17,6 +17,13 @@
     "express-session": "^1.17.2",
     "mysql": "^2.18.1",
     "nodemon": "^2.0.15"
-  }
-
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/umangkumarr/DBMS_PROJECT_2021.git"
+  },
+  "bugs": {
+    "url": "https://github.com/umangkumarr/DBMS_PROJECT_2021/issues"
+  },
+  "homepage": "https://github.com/umangkumarr/DBMS_PROJECT_2021#readme"
 }
