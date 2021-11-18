@@ -11,20 +11,24 @@ const encoder = bodyParser.urlencoded();
 express().use(express.static(path.join(__dirname, "../public")))
 express().use(fileupload());
 
-router2.get("/bookupload/:C", (req, res) => {
+router2.get("/bookupload/:C/:isbn/:owner", (req, res) => {
     char = req.params.C
     category = {
         E: char == 'E',
         S: char == 'S',
         R: char == 'R',
-        par: char
+        par: char,
+        isbnn: req.params.isbn,
+        owner: req.params.owner
     }
     console.log(category);
     res.render("bookupload", { category, layout: "bookuploadmain" });
 })
 
-router2.post("/uploadbook/:C", encoder, (req, res) => {
+router2.post("/uploadbook/:C/:isbnn/:owner", encoder, (req, res) => {
     console.log(req.files.samplefile)
+    isbn2 = req.params.isbnn;
+    owner2 = req.params.owner;
     request = req.params.C;
     console.log(request);
     title = req.body.title;
@@ -103,7 +107,7 @@ router2.post("/uploadbook/:C", encoder, (req, res) => {
             if (error) {
                 console.log(error);
                 // res.send(error);
-                res.redirect("/bookupload/S");
+                res.redirect("/bookupload/?/?/?",[C, isbn2, owner2]);
             } else {
                 price = req.body.price
                 connection.query("insert into sell(isbn, owner, price)  value(?,?,?)", [isbn, owner, price], (error, rows, fields) => {
@@ -113,10 +117,38 @@ router2.post("/uploadbook/:C", encoder, (req, res) => {
                     } else {
                         res.redirect("/buy");
                     }
-                })
+                });
             }
         });
-
+    } else if (request == 'ED'){
+        console.log(req.session.Username);
+        connection.query("insert into exchanged_books (image, ISBN, title, author, year, edition, description, rating, category, owner, highlight, publisher, language, book_category) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?)", [image, isbn, title, author, year, edition, description, 1, request, owner, highlight, publisher, language, book_category], (error, rows, fields) => {
+            if (error) {
+                // res.send(error);
+                console.log(error);
+                res.redirect("/bookupload/R");
+            } else {
+                connection.query("insert into exchange_log (rollno, owner, isbn1, isbn2) value(?,?,?,?)",[owner, owner2, isbn, isbn2], (error, rows, fields) =>{
+                    if(error){
+                        console.log(error);
+                        connection.query("delete from exchanged_books where ISBN = ?", [isbn]);
+                        return;
+                    }else{
+                        connection.query("insert into exchanged_books select * from books where isbn = ?", [isbn2], (error, rows, fields) => {
+                            if(error){
+                                console.log(error);
+                                connection.query("delete from exchanged_books where ISBN = ?", [isbn]);
+                                connection.query("delete from exchange_log where isbn1 = ? and isbn2 = ?",[isbn, isbn2]);
+                                return;
+                            }else {
+                                connection.query("delete from books where isbn = ?", [isbn2]);
+                                res.send("Please collect your book from the nearby store.")
+                            }
+                        });
+                    }
+                });
+            }
+        });
     }
 
 })

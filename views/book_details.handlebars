@@ -9,7 +9,7 @@
                         <div class="col-md-12">
 
                             <div class="bcNav">
-                                <a href="/service.html">Main</a> <i></i>
+                                <a href="/service">Main</a> <i></i>
                                 {{this.title}}
                             </div>
 
@@ -45,7 +45,7 @@
                                     </div>
 
 
-                                    <div style="padding: 10px 0px; font-size: 10pt; overflow: hidden; height: 233.99999618530273px;"
+                                    <div style="padding: 10px 0px; font-size: 11pt; overflow: hidden; height: 233.99999618530273px;"
                                         id="bookDescriptionBox" itemprop="reviewBody">
                                         <b><b><i></i>{{this.highlight}}</i></b></b><br>{{this.description}}
                                     </div>
@@ -145,7 +145,7 @@
                                         <div class="btn-group">
 
                                             <a class="btn btn-primary dlButton addDownloadedBook"
-                                                href="/action/{{this.char}}" target="" rel="nofollow">
+                                                href="/action/{{this.char}}/{{this.ISBN}}/{{this.owner}}" target="" rel="nofollow">
                                                 <span class="" aria-hidden="true"></span>
                                                 {{!-- Exchange Book   | --}}
                                                 {{this.category}}

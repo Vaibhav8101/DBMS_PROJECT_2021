@@ -24,6 +24,7 @@ router.get("/bookdetails/:bookISBN", (req, res) => {
                     if (!error) {
                         rows[0]['D_Book'] = result[0]['btitle'];
                         rows[0]['D_Author'] = result[0]['bauthor'];
+                        rows[0]['char'] = 'ED';
                         res.render("book_details", { rows: rows, layout: 'main.handlebars' })
                     }
                 })

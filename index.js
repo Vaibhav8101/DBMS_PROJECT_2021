@@ -22,6 +22,7 @@ const mysqlConnection = require("./connection");
 const Route = require("./routes/services");
 const route1 = require("./routes/main");
 const route2 = require("./routes/bookupload");
+const route3 = require("./routes/action");
 
 app.use(express.static("public"))
 app.use(express.static("Service"));
@@ -30,9 +31,9 @@ app.use(express.static("routes"));
 app.get('service.html')
 
 app.use("/", route1);
-
 app.use("/", Route);
-app.use("/",route2);
+app.use("/", route2);
+app.use("/", route3);
 
 
 app.listen(port, () => {
