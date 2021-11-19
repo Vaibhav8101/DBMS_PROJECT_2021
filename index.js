@@ -23,6 +23,7 @@ const Route = require("./routes/services");
 const route1 = require("./routes/main");
 const route2 = require("./routes/bookupload");
 const route3 = require("./routes/action");
+const route4 = require("./routes/log");
 
 app.use(express.static("public"))
 app.use(express.static("Service"));
@@ -34,6 +35,7 @@ app.use("/", route1);
 app.use("/", Route);
 app.use("/", route2);
 app.use("/", route3);
+app.use("/", route4);
 
 
 app.listen(port, () => {

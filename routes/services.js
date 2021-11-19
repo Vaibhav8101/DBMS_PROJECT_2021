@@ -18,31 +18,46 @@ router.get("/bookdetails/:bookISBN", (req, res) => {
                         }
         rows[0]['char'] = char;
         if (!err) {
-            if (char == 'E') {
+            if (char == 'E' || char == 'ED') {
                 rows[0]['category'] = "Exchange Book"
                 mysqlConnection.query("select * from demand where isbn = ?", [isbn], (error, result, field) => {
                     if (!error) {
-                        rows[0]['D_Book'] = result[0]['btitle'];
-                        rows[0]['D_Author'] = result[0]['bauthor'];
-                        rows[0]['char'] = 'ED';
-                        res.render("book_details", { rows: rows, layout: 'main.handlebars' })
+                        if(char == 'E'){
+                            rows[0]['D_Book'] = result[0]['btitle'];
+                            rows[0]['D_Author'] = result[0]['bauthor'];
+                            rows[0]['char'] = 'ED';
+                            rows[0]['dikhao'] = '1';
+                            res.render("book_details", { rows: rows, layout: 'main.handlebars' })
+                        }else{
+                            res.render("book_details", { rows: rows, layout: 'main.handlebars' })
+                        }
                     }
                 })
-            } else if (char == 'S') {
+            } else if (char == 'S' || char == 'SD') {
                 rows[0]['category'] = "Buy Book"
                 mysqlConnection.query("select * from sell where isbn = ?", [isbn], (error, result, fld) => {
                     if (!error){
                         rows[0]['price'] = result[0]['price'];
-                        res.render("book_details", { rows: rows, layout: 'main.handlebars' })
+                        if(char == 'S'){
+                            rows[0]['dikhao'] = '1';
+                            res.render("book_details", { rows: rows, layout: 'main.handlebars' })
+                        }else{
+                            res.render("book_details", { rows: rows, layout: 'main.handlebars' })
+                        }
                     }
                 })
-            } else if (char == 'R') {
+            } else if (char == 'R' || char == 'BR') {
                 console.log("Hello")
                 rows[0]['category'] = "Rent Book"
                 mysqlConnection.query("select * from rent where isbn = ?", [isbn], (error, result, fld) => {
                     if (!error){
                         rows[0]['cost'] = result[0]['cost'];
-                        res.render("book_details", { rows: rows, layout: 'main.handlebars' })
+                        if(char == 'R'){
+                            rows[0]['dikhao'] = '1';
+                            res.render("book_details", { rows: rows, layout: 'main.handlebars' })
+                        }else {
+                            res.render("book_details", { rows: rows, layout: 'main.handlebars' })
+                        }
                     }
                 })
             }
@@ -101,8 +116,8 @@ router.get("/buy", (req, res) => {
             rows['category'] = 'S';
             rows['Name'] = "Sell"
             // res.render("books", { rows: rows, layout: 'ListBook.handlebars' })
-            var cG=rows['category'];
-            res.render("books", { rows: rows,category:cG, layout: 'ListBook.handlebars' })
+            var cG = rows['category'];
+            res.render("books", { rows: rows,category: cG, layout: 'ListBook.handlebars' })
         } else {
             // res.send(err);
             console.log(err);

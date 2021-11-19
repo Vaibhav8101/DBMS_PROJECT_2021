@@ -122,7 +122,7 @@ router2.post("/uploadbook/:C/:isbnn/:owner", encoder, (req, res) => {
         });
     } else if (request == 'ED'){
         console.log(req.session.Username);
-        connection.query("insert into exchanged_books (image, ISBN, title, author, year, edition, description, rating, category, owner, highlight, publisher, language, book_category) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?)", [image, isbn, title, author, year, edition, description, 1, request, owner, highlight, publisher, language, book_category], (error, rows, fields) => {
+        connection.query("insert into books (image, ISBN, title, author, year, edition, description, rating, category, owner, highlight, publisher, language, book_category) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?)", [image, isbn, title, author, year, edition, description, 1, request, owner, highlight, publisher, language, book_category], (error, rows, fields) => {
             if (error) {
                 // res.send(error);
                 console.log(error);
@@ -131,17 +131,12 @@ router2.post("/uploadbook/:C/:isbnn/:owner", encoder, (req, res) => {
                 connection.query("insert into exchange_log (rollno, owner, isbn1, isbn2) value(?,?,?,?)",[owner, owner2, isbn, isbn2], (error, rows, fields) =>{
                     if(error){
                         console.log(error);
-                        connection.query("delete from exchanged_books where ISBN = ?", [isbn]);
-                        return;
                     }else{
-                        connection.query("insert into exchanged_books select * from books where isbn = ?", [isbn2], (error, rows, fields) => {
+                        connection.query("update books set category = 'ED' where isbn = ?", [isbn2], (error, rows, fields) => {
                             if(error){
                                 console.log(error);
-                                connection.query("delete from exchanged_books where ISBN = ?", [isbn]);
-                                connection.query("delete from exchange_log where isbn1 = ? and isbn2 = ?",[isbn, isbn2]);
                                 return;
                             }else {
-                                connection.query("delete from books where isbn = ?", [isbn2]);
                                 res.send("Please collect your book from the nearby store.")
                             }
                         });
