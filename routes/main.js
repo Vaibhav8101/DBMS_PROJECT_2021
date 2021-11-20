@@ -57,13 +57,14 @@ router1.get("/", function (req, res) {
 router1.post("/login", encoder, async function (req, res) {
     username = req.body.username;
     var password = req.body.password;
-    connection.query("select password from student where username = ? ", [username], async function (error, results, fields) {
+    connection.query("select password,roll_no from student where username = ? ", [username], async function (error, results, fields) {
         results = JSON.parse(JSON.stringify(results))
         // console.log(results[0].password);
         if (await bcrypt.compare(password, results[0].password)) {
             console.log("Login successful");
             req.session.Username = username;
             req.session.password = password;
+            req.session.roll_no = results[0].roll_no;
             sessionUsername = req.session.Username;
             // console.log(req.session.Username);
             res.redirect("/service");
@@ -110,12 +111,13 @@ router1.get("/logout", function (req, res) {
 
 //user profile
 router1.get("/profile", (req, res) => {
-    connection.query("select roll_no,img,username,fname,lname,branch,email,phone_no,gender,year,sem,rating  from student where username = ?", [sessionUsername], (error, results, fields) => {
+    connection.query("select roll_no,img,username,fname,lname,branch,email,phone_no,gender,year,sem  from student where username = ?", [sessionUsername], (error, results, fields) => {
         if (!error) {
             results = JSON.parse(JSON.stringify(results))
             res.render("userDash", { results: results, layout: "mainUserDash.handlebars" });
 
         } else {
+            console.log(error);
             res.redirect("/login");
         }
 
@@ -341,8 +343,17 @@ router1.get("/unSuccess", function (req, res) {
 })
 
 //creating a route for directing to the activities page
-router1.get("/activities", function (req, res) {
-    res.render("activities",{layout:"Listbook_second.handlebars"});
+router1.get("/activities/:category", async function (req, res) {
+    category = req.params.category;
+    if(category=="E")
+    {
+    res.render("activitiesE", {roll_no:req.session.roll_no,category:"exchange_log",layout: "activitiess" });
+    }
+    else
+    {
+    
+        res.render("activities_exchange", {category:undefined,layout: "activities_exchange_main.handlebars" }); 
+    }
 })
 
 //uploading image

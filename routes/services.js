@@ -79,7 +79,7 @@ router.get("/exchange", (req, res) => {
             var cG=rows['category'];
             // res.render("books", { rows: rows,category:cG, layout: 'ListBook.handlebars' })
             var cG=rows['category'];
-            res.render("books", { rows: rows,category:cG, layout: 'ListBook.handlebars' })
+            res.render("books", { rows: rows,category:cG,category_name:"exchange_log",roll_no:req.session.roll_no, layout: 'ListBook.handlebars' })
             // console
         } else {
             // res.send(err);
@@ -98,7 +98,7 @@ router.get("/rent", (req, res) => {
             var cG=rows['category'];
             // res.render("books", { rows: rows,category:cG, layout: 'ListBook.handlebars' })
             // var cG=rows['category'];
-            res.render("books", { rows: rows,category:cG, layout: 'ListBook.handlebars' })
+            res.render("books", { rows: rows,category:cG,category_name:"rent_log",roll_no:req.session.roll_no, layout: 'ListBook.handlebars' })
         } else {
             // res.send(err);
             console.log(err);
@@ -117,7 +117,7 @@ router.get("/buy", (req, res) => {
             rows['Name'] = "Sell"
             // res.render("books", { rows: rows, layout: 'ListBook.handlebars' })
             var cG = rows['category'];
-            res.render("books", { rows: rows,category: cG, layout: 'ListBook.handlebars' })
+            res.render("books", { rows: rows,category:cG,category_name:"buy_log",roll_no:req.session.roll_no, layout: 'ListBook.handlebars' })
         } else {
             // res.send(err);
             console.log(err);
