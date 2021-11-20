@@ -13,7 +13,6 @@ express().use(express.static(path.join(__dirname, "../public")));
 
 var sessionUsername, category, searchValue;
 
-
 //signup request
 router1.post("/signup", encoder, async function (req, res) {
     var rollno = req.body.rollno;
@@ -69,10 +68,15 @@ router1.post("/login", encoder, async function (req, res) {
             // console.log(req.session.Username);
             res.redirect("/service");
         } else {
-            res.redirect("/login")
+            res.redirect("/loginunsuccess");
         }
         res.end();
     })
+})
+
+//login unsuccess
+router1.get("/loginunsuccess", function (req, res) {
+    res.render("loginunsuccess");
 })
 
 //giving data to the signup form js so we analyse this username exist or not
@@ -88,15 +92,28 @@ router1.get("/getAll", function (req, res) {
 })
 
 //services page
+var countBook;
 router1.get("/service", function (req, res) {
     // console.log(req.session.Username);
+    connection.query("select count(isbn) as count from books where category=? or category=? or category=?",["S","E","R"],async function (error, results, fields) {
+        if (error) {
+            throw error;
+        }
+        else {
+            results = JSON.parse(JSON.stringify(results))
+            // console.log(results[0].count);
+            countBook=results[0].count;
+        }
+        res.end();
+    })
     if (req.session.Username) {
-        res.render("service", { name: req.session.Username, layout: "services" });
+        res.render("service", { name:req.session.Username,count:countBook, layout: "services" });
     }
     else {
         res.redirect("/login");
     }
 })
+
 
 //logout request
 router1.get("/logout", function (req, res) {

@@ -5,6 +5,13 @@
 
 .container {
   margin: 0 auto;
+  max-width: 86vw;
+  align-items: center;
+  justify-content: center;
+}
+
+.containerE {
+  margin: 0 auto;
   max-width: 910px;
   align-items: center;
   justify-content: center;

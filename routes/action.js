@@ -23,10 +23,12 @@ router3.get("/action/:C/:isbn/:owner", (req, res) => {
                     roll_no = rows[0]["roll_no"];
                     connection.query("insert into borrow_books(rollno, owner, isbn, startdate) values(?,?,?, CURDATE())",[roll_no, owner, isbn], (err, rows, fields) => {
                         if(err){
+                            res.render("successNoall",{category:char,statement:"Try again after some time."});
                             console.log(err);
                         }else {
                             connection.query("update books set category = 'BR' where isbn = ?",[isbn]);
-                            res.send("Lended successfully. You can collect the book from the store.");
+                            var link="rent_log";
+                            res.render("successall",{roll:req.session.roll_no,link:link,statement:"Lended successfully. You can collect the book from the store."});
                         }
                     });
                 }
@@ -42,9 +44,11 @@ router3.get("/action/:C/:isbn/:owner", (req, res) => {
                 connection.query("insert into buybook (rollno, isbn, owner) values (?,?,?)",[roll_no, isbn, owner], (err, rows, fields) => {
                     if(!err){
                         connection.query("update books set category = 'SD' where isbn = ?", [isbn]);
-                        res.send("You can collect your book from the store.");
+                        var link="buy_log";
+                        res.render("successall",{roll:req.session.roll_no,link:link,statement:"Buy successfully. You can collect the book from the store."});
                     }else{
-                        res.send("Try again after some time.");
+                        // res.send("Try again after some time.");
+                        res.render("successNoall",{category:char,statement:"Try again after some time."});
                     }
 
                 });
@@ -54,6 +58,8 @@ router3.get("/action/:C/:isbn/:owner", (req, res) => {
         }
     }
 });
+
+
 
 module.exports = router3;
 
