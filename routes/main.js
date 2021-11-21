@@ -1,5 +1,6 @@
 var connection = require("../connection");
 const express = require("express");
+const nodemailer = require("nodemailer");
 const path = require("path");
 const bcrypt = require('bcryptjs');
 const router = require("./services");
@@ -11,7 +12,7 @@ const mysqlConnection = require("../connection");
 const encoder = bodyParser.urlencoded();
 express().use(express.static(path.join(__dirname, "../public")));
 
-var sessionUsername, category, searchValue;
+var sessionUsername, category, searchValue, emailPass;
 
 //signup request
 router1.post("/signup", encoder, async function (req, res) {
@@ -79,6 +80,84 @@ router1.get("/loginunsuccess", function (req, res) {
     res.render("loginunsuccess");
 })
 
+//forget password
+router1.post("/forget_password", encoder, async function (req, res) {
+    var password;
+    connection.query("select password,email from student where username = ? ", [req.body.username], async function (error, results, fields) {
+        results = JSON.parse(JSON.stringify(results))
+        req.session.username = req.body.username;
+        // console.log(results[0].password);
+        emailPass = results[0].password;
+        const output = `
+    <p>Your password is <a style="color:blue" >${results[0].password}</a></p>
+    <p>Please update your password!!</p>`;
+
+        var transporter = nodemailer.createTransport({
+            service: 'gmail',
+            auth: {
+                user: 'bookexchangecentre.nitd@gmail.com',
+                pass: 'hello123@1234'
+            }
+        });
+
+        var mailOptions = {
+            from: 'bookexchangecentre.nitd@gmail.com',
+            to: results[0].email,
+            subject: 'Book Exchange centre',
+            text: 'Hello vaibhav8101 !',
+            html: output
+        };
+
+        transporter.sendMail(mailOptions, function (error, info) {
+            if (error) {
+                console.log(error);
+            } else {
+                // console.log("Hell");
+                console.log('Email sent: ' + info.response);
+            }
+        });
+        res.redirect("/upPassnew1");
+
+
+        res.end();
+    })
+
+
+})
+//update password page
+router1.get("/upPassnew1", function (req, res) {
+    res.sendFile(path.join(__dirname, "../public/html/updatepass.html"))
+})
+//updating forget password
+router1.post("/upPassnew", encoder, async function (req, res) {
+    var email_password = req.body.prev_password;
+    var new_password = req.body.new_password;
+    // console.log(email_password);
+    // console.log(emailPass);    
+
+
+    if (emailPass === email_password) {
+        // console.log(req.session.username); 
+        const hashpsw = await bcrypt.hash(new_password, 6);
+        connection.query("update student set password=? where username = ? ", [hashpsw, req.session.username], async function (error, results, fields) {
+            if (error) {
+                res.redirect("/unsuccess");
+                throw error;
+            }
+            else {
+                res.redirect("/login");
+            }
+            res.end();
+        })
+    }
+    else
+    {
+        res.redirect("/upPassnew1");
+    }
+})
+
+
+
 //giving data to the signup form js so we analyse this username exist or not
 router1.get("/getAll", function (req, res) {
     const db = dbService.getDbServiceInstance();
@@ -92,22 +171,22 @@ router1.get("/getAll", function (req, res) {
 })
 
 //services page
-var countBook;
+var countBook=0;
 router1.get("/service", function (req, res) {
     // console.log(req.session.Username);
-    connection.query("select count(isbn) as count from books where category=? or category=? or category=?",["S","E","R"],async function (error, results, fields) {
+    connection.query("select count(isbn) as count from books where category=? or category=? or category=?", ["S", "E", "R"], async function (error, results, fields) {
         if (error) {
             throw error;
         }
         else {
             results = JSON.parse(JSON.stringify(results))
             // console.log(results[0].count);
-            countBook=results[0].count;
+            countBook = results[0].count;
         }
         res.end();
     })
     if (req.session.Username) {
-        res.render("service", { name:req.session.Username,count:countBook, layout: "services" });
+        res.render("service", { name: req.session.Username, count: countBook, layout: "services" });
     }
     else {
         res.redirect("/login");
@@ -161,19 +240,16 @@ router1.get("/search", function (req, res) {
     mysqlConnection.query("Select * from books where category = ? and title like ?", [category, '%' + searchValue + '%'], (err, rows, fields) => {
         if (!err) {
             console.log(category);
-            
-            if(category=='E')
-            {
+
+            if (category == 'E') {
                 rows['category'] = category;
                 rows['Name'] = "Exchange"
             }
-            else if(category=='S')
-            {
+            else if (category == 'S') {
                 rows['category'] = category;
-                 rows['Name'] = "Sell"
+                rows['Name'] = "Sell"
             }
-            else if(category=='R')
-            {
+            else if (category == 'R') {
                 rows['category'] = category;
                 rows['Name'] = "Rent"
             }
@@ -362,49 +438,47 @@ router1.get("/unSuccess", function (req, res) {
 //creating a route for directing to the activities page
 router1.get("/activities/:category", async function (req, res) {
     category = req.params.category;
-    if(category=="E")
-    {
-    res.render("activitiesE", {roll_no:req.session.roll_no,category:"exchange_log",layout: "activitiess" });
+    if (category == "E") {
+        res.render("activitiesE", { roll_no: req.session.roll_no, category: "exchange_log", layout: "activitiess" });
     }
-    else
-    {
-    
-        res.render("activities_exchange", {category:undefined,layout: "activities_exchange_main.handlebars" }); 
+    else {
+
+        res.render("activities_exchange", { category: undefined, layout: "activities_exchange_main.handlebars" });
     }
 })
 
 //uploading image
 router1.post("/image", encoder, async function (req, res) {
-  let sampleFile;
-  let uploadPath;
+    let sampleFile;
+    let uploadPath;
 
-  if (!req.files || Object.keys(req.files).length === 0) {
-    return res.status(400).send('No files were uploaded.');
-  }
+    if (!req.files || Object.keys(req.files).length === 0) {
+        return res.status(400).send('No files were uploaded.');
+    }
 
-  // name of the input is sampleFile
-  sampleFile = req.files.sampleFile;
-  uploadPath =  __dirname+'/upload/' + sampleFile.name;
+    // name of the input is sampleFile
+    sampleFile = req.files.sampleFile;
+    uploadPath = __dirname + '/upload/' + sampleFile.name;
 
-  console.log(sampleFile);
+    console.log(sampleFile);
 
-  // Use mv() to place file on the server
-  console.log(req.session.Username);
-  sampleFile.mv(uploadPath, function (err) {
-      
-      if (err) return res.status(500).send(err);
-      console.log(req.session.Username);
-    //   res.send('File Uploaded');
-      connection.query('UPDATE student SET img = ? WHERE username =?', [sampleFile.name,req.session.Username], (err, rows) => {
-        if (!err) {
-          console.log("Image uploaded successfully");
-          res.redirect('/profile');
-        } else {
-          console.log(err);
-        }
-      });
+    // Use mv() to place file on the server
+    console.log(req.session.Username);
+    sampleFile.mv(uploadPath, function (err) {
+
+        if (err) return res.status(500).send(err);
+        console.log(req.session.Username);
+        //   res.send('File Uploaded');
+        connection.query('UPDATE student SET img = ? WHERE username =?', [sampleFile.name, req.session.Username], (err, rows) => {
+            if (!err) {
+                console.log("Image uploaded successfully");
+                res.redirect('/profile');
+            } else {
+                console.log(err);
+            }
+        });
     });
-   
+
 })
 
 module.exports = router1;
