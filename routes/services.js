@@ -70,7 +70,7 @@ router.get("/bookdetails/:bookISBN", (req, res) => {
 })
 
 router.get("/exchange", (req, res) => {
-    mysqlConnection.query("Select * from books where category = 'E'", (err, rows, fields) => {
+    mysqlConnection.query("Select * from books where category = 'E' and owner != ?",[req.session.roll_no], (err, rows, fields) => {
         if (!err) {
             // console.log(rows);
             rows['category'] = 'E';
@@ -91,7 +91,7 @@ router.get("/exchange", (req, res) => {
 
 //rentbook
 router.get("/rent", (req, res) => {
-    mysqlConnection.query("Select * from books where category = 'R'", (err, rows, fields) => {
+    mysqlConnection.query("Select * from books where category = 'R'and owner != ?",[req.session.roll_no], (err, rows, fields) => {
         if (!err) {
             rows['category'] = 'R';
             rows['Name'] = "Rent"
@@ -110,7 +110,7 @@ router.get("/rent", (req, res) => {
 
 //buybook
 router.get("/buy", (req, res) => {
-    mysqlConnection.query("Select * from books where category = 'S'", (err, rows, fields) => {
+    mysqlConnection.query("Select * from books where category = 'S'and owner != ?",[req.session.roll_no], (err, rows, fields) => {
         if (!err) {
             // console.log(rows);
             rows['category'] = 'S';
@@ -124,6 +124,9 @@ router.get("/buy", (req, res) => {
             return;
         }
     })
+});
+router.get("/writereview", (req, res) => {
+    res.sendFile(path.join(__dirname + "/../public/html/writereview.html"));
 })
 
 module.exports = router

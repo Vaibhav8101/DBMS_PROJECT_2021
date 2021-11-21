@@ -53,7 +53,7 @@ router2.post("/uploadbook/:C/:isbnn/:owner", encoder, (req, res) => {
     console.log(sampleFile);
     // name of the input is sampleFile
     sampleFile = req.files.sampleFile;
-    uploadPath = __dirname + '/../public/img/' + String(isbn) +".jpg";
+    uploadPath = __dirname + '/../public/img/' + String(isbn) + ".jpg";
 
     console.log(sampleFile);
 
@@ -63,7 +63,7 @@ router2.post("/uploadbook/:C/:isbnn/:owner", encoder, (req, res) => {
         if (err) return res.status(500).send(err);
         console.log(req.session.Username);
     });
-    
+
     console.log(req.body);
     // res.get(req.url);
     if (request == 'R') {
@@ -71,7 +71,7 @@ router2.post("/uploadbook/:C/:isbnn/:owner", encoder, (req, res) => {
             if (error) {
                 // res.send(error);
                 console.log(error);
-                res.redirect("/bookupload/R/?/?",[isbn2, owne2]);
+                res.redirect("/bookupload/R/?/?", [isbn2, owne2]);
             } else {
                 cost = req.body.charges;
                 connection.query("insert into rent(isbn, owner, cost) values(?,?,?)", [isbn, owner, cost], (error, rows, fields) => {
@@ -88,7 +88,7 @@ router2.post("/uploadbook/:C/:isbnn/:owner", encoder, (req, res) => {
         connection.query("insert into books (image, ISBN, title, author, year, edition, description, rating, category, owner, highlight, publisher, language, book_category) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?)", [image, isbn, title, author, year, edition, description, 1, request, owner, highlight, publisher, language, book_category], (error, rows, fields) => {
             if (error) {
                 console.log(error);
-                res.redirect("/bookupload/E/?/?",[isbn2, owner2]);
+                res.redirect("/bookupload/E/?/?", [isbn2, owner2]);
             } else {
                 btitle = req.body.btitle;
                 bauthor = req.body.bauthor;
@@ -119,24 +119,25 @@ router2.post("/uploadbook/:C/:isbnn/:owner", encoder, (req, res) => {
                 });
             }
         });
-    } else if (request == 'ED'){
+    } else if (request == 'ED') {
         console.log(req.session.Username);
         connection.query("insert into books (image, ISBN, title, author, year, edition, description, rating, category, owner, highlight, publisher, language, book_category) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?)", [image, isbn, title, author, year, edition, description, 1, request, owner, highlight, publisher, language, book_category], (error, rows, fields) => {
             if (error) {
                 // res.send(error);
                 console.log(error);
-                res.redirect("/bookupload/R/?/?",[isbn2,owner2]);
+                res.redirect("/bookupload/R/?/?", [isbn2, owner2]);
             } else {
-                connection.query("insert into exchange_log (rollno, owner, isbn1, isbn2) value(?,?,?,?)",[owner, owner2, isbn, isbn2], (error, rows, fields) =>{
-                    if(error){
+                connection.query("insert into exchange_log (rollno, owner, isbn1, isbn2) value(?,?,?,?)", [owner, owner2, isbn, isbn2], (error, rows, fields) => {
+                    if (error) {
                         console.log(error);
-                    }else{
+                    } else {
                         connection.query("update books set category = 'ED' where isbn = ?", [isbn2], (error, rows, fields) => {
-                            if(error){
+                            if (error) {
                                 console.log(error);
                                 return;
-                            }else {
-                                res.send("Please collect your book from the nearby store.")
+                            } else {
+                                var link = "exchange_log";
+                                res.render("successall", { roll: req.session.roll_no, link: link, statement: "Exchange successful. You can collect the book from the store." });
                             }
                         });
                     }
