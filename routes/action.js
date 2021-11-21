@@ -125,7 +125,8 @@ router3.post("/feedback", encoder, (req, res) => {
             t_feedback += 1;
             connection.query("update books set rating = ? and t_feedback = ? where isbn = ?", [rating, t_feedback, data.isbn], (err, row, fileds) => {
                 if (!err) {
-                    res.render("service");
+                    connection.query("insert into rating( isbn, stars, description, username) value(?,?,?,?,?)",[data.isbn, rating, body.description, req.session.Username]);
+                    res.render("service", {layout:'services.handlebars'});
                 }
             })
         } else {
