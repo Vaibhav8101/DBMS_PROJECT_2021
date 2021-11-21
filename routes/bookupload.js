@@ -106,7 +106,7 @@ router2.post("/uploadbook/:C/:isbnn/:owner", encoder, (req, res) => {
             if (error) {
                 console.log(error);
                 // res.send(error);
-                res.redirect("/bookupload/?/?/?",[request, isbn2, owner2]);
+                // res.redirect("/bookupload/?/?/?",[request, isbn2, owner2]);
             } else {
                 price = req.body.price
                 connection.query("insert into sell(isbn, owner, price)  value(?,?,?)", [isbn, owner, price], (error, rows, fields) => {

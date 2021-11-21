@@ -1,36 +1,39 @@
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
-  {{!-- <link rel="stylesheet" type="text/css" href="bookcard.css"> --}}
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-   <link rel="stylesheet" type="text/css" href="css/bookcard.css">
+  {{!--
+  <link rel="stylesheet" type="text/css" href="bookcard.css"> --}}
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <link rel="stylesheet" type="text/css" href="css/bookcard.css">
 </head>
 
 <body>
 
-<nav class="navbar navbar-dark bg-dark justify-content-between">
+  <nav class="navbar navbar-dark bg-dark justify-content-between">
     <div class="con">
-    <a class="navbar-brand" style="color: white;">Book exchange center</a>
+      <a class="navbar-brand" style="color: white;">Book exchange center</a>
 
-    <a class="navbar-brand" style="color: white;" 
-    href="/{{category_name}}/{{roll_no}}">Past Activities</a>
-    <a class="navbar-brand" style="color: white;" 
-    href="/service">Main Menu</a>
+      <a class="navbar-brand" style="color: white;" href="/{{category_name}}/{{roll_no}}">Past Activities</a>
+      <a class="navbar-brand" style="color: white;" href="/service">Main Menu</a>
     </div>
-     
+
 
     <form class="form-inline" method="POST" action="/search/{{category}}">
-        <input class="form-control mr-sm-2" type="search" placeholder="Search" name="search" aria-label="Search">
-        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+      <input class="form-control mr-sm-2" type="search" placeholder="Search" name="search" aria-label="Search">
+      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
     </form>
-</nav>
-<button type="button" class="button" style="margin-top: 2%;"><a style="padding-left: 30px; padding-top: 20px; text-decoration:none; color:black;" href="bookupload/{{rows.category}}/A/A">Open your book for
+  </nav>
+  <button type="button" class="button" style="margin-top: 2%;"><a
+      style="padding-left: 30px; padding-top: 20px;font-size:18px; text-decoration:none; color:black;"
+      href="bookupload/{{rows.category}}/A/A">Open your book for
       {{rows.Name}}.</a></button>
 
   <div id="large-th">
-    <div  style="font-family: 'Times New Roman'" class="container">
+    <div style="font-family: 'Times New Roman'" class="container">
       <div class="conatainer_v" style="padding-top: 4%;">
-      <h2> A list of books</h2>
+        <h2> A list of books</h2>
       </div>
       <br>
       <div class="choose">
@@ -39,12 +42,18 @@
       </div>
       <div id="list-th">
         {{{body}}}
+      </div>
     </div>
-  </div>
-  <script src="js/search_book_1.js"></script>
-  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="js/search_book_1.js"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+      integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+      crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+      integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+      crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+      integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+      crossorigin="anonymous"></script>
 </body>
 
 </html>
