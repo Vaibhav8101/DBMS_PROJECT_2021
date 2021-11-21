@@ -125,8 +125,16 @@ router3.post("/feedback", encoder, (req, res) => {
             t_feedback += 1;
             connection.query("update books set rating = ? and t_feedback = ? where isbn = ?", [rating, t_feedback, data.isbn], (err, row, fileds) => {
                 if (!err) {
-                    connection.query("insert into rating( isbn, stars, description, username) value(?,?,?,?)",[data.isbn, rating, body.description, req.session.Username]);
-                    res.render("service", {layout:'services.handlebars'});
+                    connection.query("insert into rating( roll_no,isbn, stars, description, username) value(?,?,?,?,?)",[req.session.roll_no,data.isbn, rating, body.description, req.session.Username],function (error, results, fields) {
+                        if (error) {
+                            console.log(error);
+                        }
+                        else{
+                            console.log("Insert successfull");
+                            res.render("service", {name:req.session.Username,count:req.session.countBook,layout:'services.handlebars'});
+                        }
+                    });
+                    
                 }
             })
         } else {

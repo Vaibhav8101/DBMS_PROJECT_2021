@@ -4,7 +4,7 @@ const path = require("path");
 const bcrypt = require('bcryptjs');
 const router = require("./services");
 const dbService = require('./dbservices');
-const router1 = express.Router()
+const router1 = express.Router();
 const Handlebars = require("express-handlebars");
 const bodyParser = require("body-parser");//for reading form data
 const mysqlConnection = require("../connection");
@@ -110,6 +110,7 @@ router1.get("/service", function (req, res) {
         res.end();
     })
     if (req.session.Username) {
+        req.session.countBook=countBook;
         res.render("service", { name:req.session.Username,count:countBook, layout: "services" });
     }
     else {
