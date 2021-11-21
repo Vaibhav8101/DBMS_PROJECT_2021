@@ -57,15 +57,14 @@ router1.get("/", function (req, res) {
 router1.post("/login", encoder, async function (req, res) {
     username = req.body.username;
     var password = req.body.password;
-    console.log(username, password);
-    connection.query("select password from student where username = ? ", [username], async function (error, results, fields) {
-        console.log(results)
+    connection.query("select password,roll_no from student where username = ? ", [username], async function (error, results, fields) {
         results = JSON.parse(JSON.stringify(results))
         // console.log(results[0].password);
         if (await bcrypt.compare(password, results[0].password)) {
             console.log("Login successful");
             req.session.Username = username;
             req.session.password = password;
+            req.session.roll_no = results[0].roll_no;
             sessionUsername = req.session.Username;
             // console.log(req.session.Username);
             res.redirect("/service");
@@ -118,6 +117,7 @@ router1.get("/profile", (req, res) => {
             res.render("userDash", { results: results, layout: "mainUserDash.handlebars" });
 
         } else {
+            console.log(error);
             res.redirect("/login");
         }
 
@@ -343,8 +343,17 @@ router1.get("/unSuccess", function (req, res) {
 })
 
 //creating a route for directing to the activities page
-router1.get("/activities", function (req, res) {
-    res.render("activities",{layout:"Listbook_second.handlebars"});
+router1.get("/activities/:category", async function (req, res) {
+    category = req.params.category;
+    if(category=="E")
+    {
+    res.render("activitiesE", {roll_no:req.session.roll_no,category:"exchange_log",layout: "activitiess" });
+    }
+    else
+    {
+    
+        res.render("activities_exchange", {category:undefined,layout: "activities_exchange_main.handlebars" }); 
+    }
 })
 
 //uploading image

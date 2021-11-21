@@ -42,7 +42,7 @@ router4.get("/rent_log/:owner", async function (req, res) {
         if(!err){
             connection.query("select T.isbn, T.rollno, T.owner, T.startdate, T.enddate, B.title, B.author, B.image from (select * from borrow_books where rollno = ? union select * from borrow_books where owner = ?) as T join books B on B.isbn = T.isbn;", [owner, owner], async function(err, rows2, field){
                 data = {rows1, rows2};
-                res.render("activities", {data:data, layout: "activitiess"});
+                res.render("activities", {data:data,category_1:"Your lended Books",category_2:"Your borrowed books", layout: "activitiess"});
 
             })
         }
@@ -54,7 +54,7 @@ router4.get("/buy_log/:owner", async function (req, res) {
         if(!err){
             connection.query("select T.isbn, T.rollno, T.owner, B.title, B.author, B.image from (select * from buybook where rollno = ? union select * from buybook where owner = ?) as T join books B on B.isbn = T.isbn;", [owner, owner], async function(err, rows2, field){
                 data = {rows1, rows2};
-                res.render("activities", {data:data, layout: "activitiess"});
+                res.render("activities", {data:data,category_1:"Books you have buys",category_2:"Your books for sell", layout: "activitiess"});
 
             })
         }

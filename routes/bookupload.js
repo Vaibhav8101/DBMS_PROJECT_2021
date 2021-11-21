@@ -71,7 +71,7 @@ router2.post("/uploadbook/:C/:isbnn/:owner", encoder, (req, res) => {
             if (error) {
                 // res.send(error);
                 console.log(error);
-                res.redirect("/bookupload/R");
+                res.redirect("/bookupload/R/?/?",[isbn2, owne2]);
             } else {
                 cost = req.body.charges;
                 connection.query("insert into rent(isbn, owner, cost) values(?,?,?)", [isbn, owner, cost], (error, rows, fields) => {
@@ -88,14 +88,13 @@ router2.post("/uploadbook/:C/:isbnn/:owner", encoder, (req, res) => {
         connection.query("insert into books (image, ISBN, title, author, year, edition, description, rating, category, owner, highlight, publisher, language, book_category) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?)", [image, isbn, title, author, year, edition, description, 1, request, owner, highlight, publisher, language, book_category], (error, rows, fields) => {
             if (error) {
                 console.log(error);
-                res.redirect("/bookupload/E");
+                res.redirect("/bookupload/E/?/?",[isbn2, owner2]);
             } else {
                 btitle = req.body.btitle;
                 bauthor = req.body.bauthor;
                 connection.query("insert into demand (ISBN, owner, btitle, bauthor) values(?,?,?,?)", [isbn, owner, btitle, bauthor], (error, rows, fields) => {
                     if (error) {
                         console.log(error);
-                        res.redirect(req.url);
                     } else {
                         res.redirect("/exchange");
                     }
@@ -103,11 +102,11 @@ router2.post("/uploadbook/:C/:isbnn/:owner", encoder, (req, res) => {
             }
         });
     } else if (request == 'S') {
-        connection.query("insert into books (ISBN,image, title, author, year, edition, description, rating, category, owner, highlight, publisher, language, book_category) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", [isbn, image, title, author, year, edition, description, 1, request, owner, highlight, publisher, language, book_category], (error, rows, fields) => {
+        connection.query("insert into books (ISBN,image, title, author, year, edition, description, rating, category, owner, highlight, publisher, language, book_category) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?)", [isbn, image, title, author, year, edition, description, 1, request, owner, highlight, publisher, language, book_category], (error, rows, fields) => {
             if (error) {
                 console.log(error);
                 // res.send(error);
-                res.redirect("/bookupload/?/?/?",[C, isbn2, owner2]);
+                res.redirect("/bookupload/?/?/?",[request, isbn2, owner2]);
             } else {
                 price = req.body.price
                 connection.query("insert into sell(isbn, owner, price)  value(?,?,?)", [isbn, owner, price], (error, rows, fields) => {
@@ -126,7 +125,7 @@ router2.post("/uploadbook/:C/:isbnn/:owner", encoder, (req, res) => {
             if (error) {
                 // res.send(error);
                 console.log(error);
-                res.redirect("/bookupload/R");
+                res.redirect("/bookupload/R/?/?",[isbn2,owner2]);
             } else {
                 connection.query("insert into exchange_log (rollno, owner, isbn1, isbn2) value(?,?,?,?)",[owner, owner2, isbn, isbn2], (error, rows, fields) =>{
                     if(error){

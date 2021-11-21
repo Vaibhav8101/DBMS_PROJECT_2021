@@ -21,11 +21,11 @@
             <input id="books-name" name="title" placeholder="Title of the book" type="text" required></input>
           </div>
           <div class="books-photo">
+            <label for="books-upload">Upload a photo</label>
             <button id="books-upload">
               <i class="fas fa-camera-retro"></i>
-              <input type="file" required name="sampleFile" accept="image/*" />
+              <input type="file" required name="sampleFile" accept="image/*" style="max-width: 200px;"/>
             </button>
-            <label for="books-upload">Upload a photo</label>
           </div>
         </div>
         <div class="set">
@@ -127,7 +127,7 @@
 
       <footer>
         <div class="set">
-          <button type="reset" value="reset">Reset</button>
+          <button type="reset" id="back" value="reset">Reset</button>
           <button type="submit" id="next">Next</button>
         </div>
       </footer>

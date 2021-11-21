@@ -9,16 +9,29 @@
 <body>
 
 <nav class="navbar navbar-dark bg-dark justify-content-between">
+    <div class="con">
     <a class="navbar-brand" style="color: white;">Book exchange center</a>
+
+    <a class="navbar-brand" style="color: white;" 
+    href="/{{category_name}}/{{roll_no}}">Past Activities</a>
+    <a class="navbar-brand" style="color: white;" 
+    href="/service">Main Menu</a>
+    </div>
+     
+
     <form class="form-inline" method="POST" action="/search/{{category}}">
         <input class="form-control mr-sm-2" type="search" placeholder="Search" name="search" aria-label="Search">
         <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
     </form>
 </nav>
+<button type="button" class="button" style="margin-top: 2%;"><a style="padding-left: 30px; padding-top: 20px; text-decoration:none; color:black;" href="bookupload/{{rows.category}}/A/A">Open your book for
+      {{rows.Name}}.</a></button>
 
   <div id="large-th">
     <div  style="font-family: 'Times New Roman'" class="container">
+      <div class="conatainer_v" style="padding-top: 4%;">
       <h2> A list of books</h2>
+      </div>
       <br>
       <div class="choose">
         <a href="#list-th"><i class="fa fa-th-list" aria-hidden="true"></i></a>
