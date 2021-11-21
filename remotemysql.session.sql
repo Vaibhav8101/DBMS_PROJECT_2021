@@ -16,6 +16,11 @@ select * from
     join exchanged_books BB
     on BB.owner = TT.owner and TT.isbn2 = BB.isbn) as T;
 
+insert into sell(isbn, owner, price)  value(9780062457790, 201210006, 400);
+
+update sell set owner = 201210051 where isbn = 9780062457790 ;
+
+delete from buybook where isbn = 9780140027686;
 
 insert into books select * from exchanged_books;
 
@@ -31,6 +36,19 @@ select * from borrow_books where owner = 201210006) as T
 join books B
 on B.isbn = T.isbn;
 
+
+create table transaction(
+    TRANSID varchar(20) primary key,
+    isbn BIGINT not null,
+    sender_name varchar(40) not null,
+    s_rollno BIGINT not null,
+    Receiver_name VARCHAR(40) not null,
+    r_rollno BIGINT not null,
+    amount INTEGER not null
+);
+
+alter table books
+add t_feedback INTEGER not null DEFAULT 1;
 
 
 create table buybook(

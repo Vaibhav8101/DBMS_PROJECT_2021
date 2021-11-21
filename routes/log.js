@@ -54,7 +54,7 @@ router4.get("/buy_log/:owner", async function (req, res) {
         if(!err){
             connection.query("select T.isbn, T.rollno, T.owner, B.title, B.author, B.image from (select * from buybook where rollno = ? union select * from buybook where owner = ?) as T join books B on B.isbn = T.isbn;", [owner, owner], async function(err, rows2, field){
                 data = {rows1, rows2};
-                res.render("activities", {data:data,category_2:"Books you have buys",category_1:"Your books for sell", layout: "activitiess"});
+                res.render("activities", {data:data,category_2:"Purchased Books",category_1:"Your books for sell", layout: "activitiess"});
 
             })
         }

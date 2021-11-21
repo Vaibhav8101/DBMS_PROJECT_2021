@@ -7,3 +7,4 @@
   6. mysql
   7. nodemon
   8. express-fileupload
+  9. crypto

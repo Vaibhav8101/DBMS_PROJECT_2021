@@ -5,7 +5,7 @@ const path = require("path");
 const bcrypt = require('bcryptjs');
 const router = require("./services");
 const dbService = require('./dbservices');
-const router1 = express.Router()
+const router1 = express.Router();
 const Handlebars = require("express-handlebars");
 const bodyParser = require("body-parser");//for reading form data
 const mysqlConnection = require("../connection");
@@ -57,14 +57,17 @@ router1.get("/", function (req, res) {
 router1.post("/login", encoder, async function (req, res) {
     username = req.body.username;
     var password = req.body.password;
-    connection.query("select password,roll_no from student where username = ? ", [username], async function (error, results, fields) {
+    connection.query("select password,roll_no, fname, lname from student where username = ? ", [username], async function (error, results, fields) {
         results = JSON.parse(JSON.stringify(results))
         // console.log(results[0].password);
         if (await bcrypt.compare(password, results[0].password)) {
+            console.log(results)
             console.log("Login successful");
             req.session.Username = username;
             req.session.password = password;
             req.session.roll_no = results[0].roll_no;
+            req.session.Name = results[0].fname + " " + results[0].lname;
+            // console.log(results[0].fname + " " + results[0].lname);
             sessionUsername = req.session.Username;
             // console.log(req.session.Username);
             res.redirect("/service");
@@ -186,7 +189,8 @@ router1.get("/service", function (req, res) {
         res.end();
     })
     if (req.session.Username) {
-        res.render("service", { name: req.session.Username, count: countBook, layout: "services" });
+        req.session.countBook=countBook;
+        res.render("service", { name:req.session.Username,count:countBook, layout: "services" });
     }
     else {
         res.redirect("/login");
