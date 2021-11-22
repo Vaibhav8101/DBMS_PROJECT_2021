@@ -3,7 +3,7 @@ const exphbs = require("express-handlebars")
 const path  = require("path")
 const fileUpload = require('express-fileupload');
 const app = express()
-const port = 3030
+const port = Process.env.PORT || 3030;
 var session = require('express-session')
 app.engine('handlebars', exphbs());
 
