@@ -12,23 +12,24 @@ router.get("/bookdetails/:bookISBN", (req, res) => {
     isbn = req.params.bookISBN;
     mysqlConnection.query("Select * from books where isbn = " + String(isbn), (err, rows, fields) => {
         let char = rows[0]['category'];
-        rows[0]['cat'] = {E: char == 'E',
-                         R: char == 'R',
-                         S: char == 'S'                    
-                        }
+        rows[0]['cat'] = {
+            E: char == 'E',
+            R: char == 'R',
+            S: char == 'S'
+        }
         rows[0]['char'] = char;
         if (!err) {
             if (char == 'E' || char == 'ED') {
                 rows[0]['category'] = "Exchange Book"
                 mysqlConnection.query("select * from demand where isbn = ?", [isbn], (error, result, field) => {
                     if (!error) {
-                        if(char == 'E'){
+                        if (char == 'E') {
                             rows[0]['D_Book'] = result[0]['btitle'];
                             rows[0]['D_Author'] = result[0]['bauthor'];
                             rows[0]['char'] = 'ED';
                             rows[0]['dikhao'] = '1';
                             res.render("book_details", { rows: rows, layout: 'main.handlebars' })
-                        }else{
+                        } else {
                             res.render("book_details", { rows: rows, layout: 'main.handlebars' })
                         }
                     }
@@ -36,26 +37,26 @@ router.get("/bookdetails/:bookISBN", (req, res) => {
             } else if (char == 'S' || char == 'SD') {
                 rows[0]['category'] = "Buy Book"
                 mysqlConnection.query("select * from sell where isbn = ?", [isbn], (error, result, fld) => {
-                    if (!error){
+                    if (!error) {
                         rows[0]['price'] = result[0]['price'];
-                        if(char == 'S'){
+                        if (char == 'S') {
                             rows[0]['dikhao'] = '1';
                             res.render("book_details", { rows: rows, layout: 'main.handlebars' })
-                        }else{
+                        } else {
                             res.render("book_details", { rows: rows, layout: 'main.handlebars' })
                         }
                     }
                 })
             } else if (char == 'R' || char == 'BR') {
-                console.log("Hello")
+                // console.log("Hello")
                 rows[0]['category'] = "Rent Book"
                 mysqlConnection.query("select * from rent where isbn = ?", [isbn], (error, result, fld) => {
-                    if (!error){
+                    if (!error) {
                         rows[0]['cost'] = result[0]['cost'];
-                        if(char == 'R'){
+                        if (char == 'R') {
                             rows[0]['dikhao'] = '1';
                             res.render("book_details", { rows: rows, layout: 'main.handlebars' })
-                        }else {
+                        } else {
                             res.render("book_details", { rows: rows, layout: 'main.handlebars' })
                         }
                     }
@@ -70,16 +71,13 @@ router.get("/bookdetails/:bookISBN", (req, res) => {
 })
 
 router.get("/exchange", (req, res) => {
-    mysqlConnection.query("Select * from books where category = 'E' and owner != ?",[req.session.roll_no], (err, rows, fields) => {
+    mysqlConnection.query("Select * from books where category = 'E' and owner != ?", [req.session.roll_no], (err, rows, fields) => {
         if (!err) {
             // console.log(rows);
             rows['category'] = 'E';
             rows['Name'] = "Exchange"
-            // res.render("books", { rows: rows, layout: 'ListBook.handlebars' })
-            var cG=rows['category'];
-            // res.render("books", { rows: rows,category:cG, layout: 'ListBook.handlebars' })
-            var cG=rows['category'];
-            res.render("books", { rows: rows,category:cG,category_name:"exchange_log",roll_no:req.session.roll_no, layout: 'ListBook.handlebars' })
+            var cG = rows['category'];
+            res.render("books", { rows: rows, category: cG, category_name: "exchange_log", roll_no: req.session.roll_no, layout: 'ListBook.handlebars' })
             // console
         } else {
             // res.send(err);
@@ -91,14 +89,12 @@ router.get("/exchange", (req, res) => {
 
 //rentbook
 router.get("/rent", (req, res) => {
-    mysqlConnection.query("Select * from books where category = 'R'and owner != ?",[req.session.roll_no], (err, rows, fields) => {
+    mysqlConnection.query("Select * from books where category = 'R'and owner != ?", [req.session.roll_no], (err, rows, fields) => {
         if (!err) {
             rows['category'] = 'R';
             rows['Name'] = "Rent"
-            var cG=rows['category'];
-            // res.render("books", { rows: rows,category:cG, layout: 'ListBook.handlebars' })
-            // var cG=rows['category'];
-            res.render("books", { rows: rows,category:cG,category_name:"rent_log",roll_no:req.session.roll_no, layout: 'ListBook.handlebars' })
+            var cG = rows['category'];
+            res.render("books", { rows: rows, category: cG, category_name: "rent_log", roll_no: req.session.roll_no, layout: 'ListBook.handlebars' })
         } else {
             // res.send(err);
             console.log(err);
@@ -110,14 +106,14 @@ router.get("/rent", (req, res) => {
 
 //buybook
 router.get("/buy", (req, res) => {
-    mysqlConnection.query("Select * from books where category = 'S'and owner != ?",[req.session.roll_no], (err, rows, fields) => {
+    mysqlConnection.query("Select * from books where category = 'S'and owner != ?", [req.session.roll_no], (err, rows, fields) => {
         if (!err) {
             // console.log(rows);
             rows['category'] = 'S';
             rows['Name'] = "Sell"
             // res.render("books", { rows: rows, layout: 'ListBook.handlebars' })
             var cG = rows['category'];
-            res.render("books", { rows: rows,category:cG,category_name:"buy_log",roll_no:req.session.roll_no, layout: 'ListBook.handlebars' })
+            res.render("books", { rows: rows, category: cG, category_name: "buy_log", roll_no: req.session.roll_no, layout: 'ListBook.handlebars' })
         } else {
             // res.send(err);
             console.log(err);

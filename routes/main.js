@@ -3,10 +3,8 @@ const express = require("express");
 const nodemailer = require("nodemailer");
 const path = require("path");
 const bcrypt = require('bcryptjs');
-const router = require("./services");
 const dbService = require('./dbservices');
 const router1 = express.Router();
-const Handlebars = require("express-handlebars");
 const bodyParser = require("body-parser");//for reading form data
 const mysqlConnection = require("../connection");
 const encoder = bodyParser.urlencoded();
@@ -61,7 +59,7 @@ router1.post("/login", encoder, async function (req, res) {
         results = JSON.parse(JSON.stringify(results))
         // console.log(results[0].password);
         if (await bcrypt.compare(password, results[0].password)) {
-            console.log(results)
+            // console.log(results)
             console.log("Login successful");
             req.session.Username = username;
             req.session.password = password;
