@@ -11,6 +11,7 @@ var mysqlConnection = mysql.createPool({
     user: user,
     password: pass,
     database: database,
+    connectionLimit : 10,
     multipleStatements: true
 })
 

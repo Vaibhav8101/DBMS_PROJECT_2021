@@ -9,7 +9,7 @@ const connection = require("../connection");
 const router2 = require("./bookupload");
 
 express().use(express.static(path.join(__dirname, "../public")))
-
+//category change and lead to transaction page
 router3.get("/action/:C/:isbn/:owner", (req, res) => {
     console.log("dsds");
     char = req.params.C;

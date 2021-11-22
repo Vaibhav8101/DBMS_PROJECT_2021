@@ -10,7 +10,7 @@ const encoder = bodyParser.urlencoded();
 
 express().use(express.static(path.join(__dirname, "../public")))
 express().use(fileupload());
-
+//uploading the books data with respect to their categories.
 router2.get("/bookupload/:C/:isbn/:owner", (req, res) => {
     char = req.params.C
     category = {

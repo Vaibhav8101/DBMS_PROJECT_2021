@@ -5,7 +5,7 @@ const router4 = express.Router();
 const connection = require("../connection");
 
 express().use(express.static(path.join(__dirname, "../public")))
-
+//query for displaying the exchange logs of the users
 router4.get("/exchange_log/:owner", async function (req, res) {
     console.log("hello");
     owner = req.params.owner;
@@ -35,7 +35,7 @@ router4.get("/exchange_log/:owner", async function (req, res) {
         });
     })
 });
-
+//query for displaying the rent log of the users
 router4.get("/rent_log/:owner", async function (req, res) {
     owner = req.params.owner;
     connection.query("select * from books where category = 'R' and owner = ?",[owner],async function (err, rows1, fields) {
@@ -48,6 +48,7 @@ router4.get("/rent_log/:owner", async function (req, res) {
         }
     })
 })
+//query for displaying the buy log of the user
 router4.get("/buy_log/:owner", async function (req, res) {
     owner = req.params.owner;
     connection.query("select * from books where category = 'S' and owner = ?",[owner], async function (err, rows1, fields) {

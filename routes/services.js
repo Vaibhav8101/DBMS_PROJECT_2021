@@ -7,7 +7,8 @@ const router2 = require("./bookupload");
 
 express().use(express.static(path.join(__dirname, "../public")))
 
-
+//here with the help of queries we are displaying the number of books available at particular 
+//category.
 router.get("/bookdetails/:bookISBN", (req, res) => {
     isbn = req.params.bookISBN;
     mysqlConnection.query("Select * from books where isbn = " + String(isbn), (err, rows, fields) => {
@@ -129,4 +130,4 @@ router.get("/writereview", (req, res) => {
     res.sendFile(path.join(__dirname + "/../public/html/writereview.html"));
 })
 
-module.exports = router
+module.exports = router;

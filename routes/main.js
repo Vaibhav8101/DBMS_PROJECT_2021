@@ -87,6 +87,10 @@ router1.get("/loginunsuccess", function (req, res) {
 router1.post("/forget_password", encoder, async function (req, res) {
     var password;
     connection.query("select password,email from student where username = ? ", [req.body.username], async function (error, results, fields) {
+        if(error)
+        {
+            res.render("")
+        }
         results = JSON.parse(JSON.stringify(results))
         req.session.username = req.body.username;
         // console.log(results[0].password);
@@ -173,7 +177,7 @@ router1.get("/getAll", function (req, res) {
 
 })
 
-//services page
+//services page with the count of books
 var countBook=0;
 router1.get("/service", function (req, res) {
     // console.log(req.session.Username);
