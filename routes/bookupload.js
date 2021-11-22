@@ -122,6 +122,7 @@ router2.post("/uploadbook/:C/:isbnn/:owner", encoder, (req, res) => {
                     if (error) {
                         console.log(error);
                     } else {
+                        req.session.ex=isbn;
                         connection.query("update books set category = 'ED' where isbn = ?", [isbn2], (error, rows, fields) => {
                             if (error) {
                                 console.log(error);
